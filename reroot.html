@@ -601,7 +601,7 @@ function deriveTopFactors() {
 // UNIVERSITY RATER
 const factors = [
   { id: 'scholarship', label: 'Scholarship / Affordability', source: 'Research + financial aid letter', weight: 2 },
-  { id: 'careerservices', label: 'Career Services (international focus)', source: 'Ask alumni: how good is Career Services for F-1 students?', weight: 2 },
+  { id: 'careerservices', label: 'Career Services (international focus)', source: 'Ask alumni: how good is Career services for F-1 students?', weight: 2 },
   { id: 'cpt', label: 'CPT eligibility timeline', source: 'Ask DSO or check program policy', weight: 2 },
   { id: 'oncampus', label: 'On-campus job availability', source: 'Ask current students how easy it was', weight: 1.5 },
   { id: 'alumni', label: 'Alumni network in your field', source: 'Search LinkedIn for alumni at your target employers', weight: 2 },
@@ -618,13 +618,13 @@ function renderUniRater(container, mode) {
   const notes = { research: "Rate based on what you find online. It is okay to estimate, you will update as you learn more.", peopleTalk: "Update after talking to alumni or current students. Their answers should shift your scores.", offers: "You have offers. Rate each school on everything you know now." };
   container.innerHTML = `
     <div class="uni-phase-toggle">
-      <button class="phase-toggle-btn ${mode==='research'?'active':''}" onclick="switchMode(this,'research')">Phase 1: Research</button>
-      <button class="phase-toggle-btn ${mode==='peopleTalk'?'active':''}" onclick="switchMode(this,'peopleTalk')">Phase 2: After Talking to People</button>
-      <button class="phase-toggle-btn ${mode==='offers'?'active':''}" onclick="switchMode(this,'offers')">Phase 3: You Have Offers</button>
+      <button class="phase-toggle-btn ${mode==="research"?"active":""}" onclick="switchMode(this,'research')">Phase 1: Research</button>
+      <button class="phase-toggle-btn ${mode==="peopleTalk"?"active":""}" onclick="switchMode(this,'peopleTalk')">Phase 2: After Talking to People</button>
+      <button class="phase-toggle-btn ${mode==="offers"?"active":""}" onclick="switchMode(this,'offers')">Phase 3: You Have Offers</button>
     </div>
     <div class="phase-note">${notes[mode]}</div>
     <div class="uni-rater-header"><div style="font-size:14px;font-weight:700">University Comparison</div><button class="add-uni-btn" onclick="addUni(this.closest('.uni-rater'))">+ Add University</button></div>
-    <div id="uniCards-${mode}">${universities.map((u,i) => buildUniCard(u,i,mode)).join('')}</div>`;
+    <div id="uniCards-${mode}">${universities.map((u,i) => buildUniCard(u,i,mode)).join("")}</div>`;
   if (universities.length === 0) addUni(container);
 }
 
@@ -632,28 +632,28 @@ function buildUniCard(u, idx, mode) {
   const tw = factors.reduce((s,f) => s+f.weight, 0);
   const score = factors.reduce((s,f) => { const v=(u.ratings&&u.ratings[mode]&&u.ratings[mode][f.id])||5; return s+(v/10)*f.weight; }, 0);
   const pct = Math.round((score/tw)*100);
-  const bc = pct>=70?'high':pct>=45?'mid':'low';
-  const rec = pct>=70 ? 'Strong fit. If you have an offer, seriously consider accepting.' : pct>=45 ? 'Decent fit. Try to negotiate a better scholarship before deciding.' : 'Weak fit based on your priorities. Consider whether this is worth your time.';
-  const rc = pct>=70?'rec-apply':pct>=45?'rec-negotiate':'rec-pass';
+  const bc = pct>=70?"high":pct>=45?"mid":"low";
+  const rec = pct>=70 ? "Strong fit. If you have an offer, seriously consider accepting." : pct>=45 ? "Decent fit. Try to negotiate a better scholarship before deciding." : "Weak fit based on your priorities. Consider whether this is worth your time.";
+  const rc = pct>=70?"rec-apply":pct>=45?"rec-negotiate":"rec-pass";
   return `<div class="uni-card" id="uc-${idx}-${mode}">
     <div class="uni-card-header">
-      <input class="uni-name-input" placeholder="University name..." value="${u.name||''}" oninput="universities[${idx}].name=this.value">
+      <input class="uni-name-input" placeholder="University name..." value="${u.name||""}" oninput="universities[${idx}].name=this.value">
       <div class="uni-score-badge ${bc}" id="badge-${idx}-${mode}">${pct}%</div>
       <button class="remove-uni" onclick="removeUni(${idx})">Remove</button>
     </div>
-    <div class="factors-grid">${factors.map(f => { const val=(u.ratings&&u.ratings[mode]&&u.ratings[mode][f.id])||5; return `<div class="factor-row"><div class="factor-label">${f.label}<span id="lbl-${idx}-${mode}-${f.id}">${val}/10</span></div><div class="factor-source">${f.source}</div><input type="range" class="factor-slider" min="1" max="10" value="${val}" oninput="updateRating(${idx},'${mode}','${f.id}',this.value)"></div>`; }).join('')}</div>
-    <div class="uni-notes"><label>Notes from research or conversations</label><textarea placeholder="e.g. Alumni said Career Services rarely helps F-1 students..." oninput="universities[${idx}].notes=this.value">${u.notes||''}</textarea></div>
+    <div class="factors-grid">${factors.map(f => { const val=(u.ratings&&u.ratings[mode]&&u.ratings[mode][f.id])||5; return `<div class="factor-row"><div class="factor-label">${f.label}<span id="lbl-${idx}-${mode}-${f.id}">${val}/10</span></div><div class="factor-source">${f.source}</div><input type="range" class="factor-slider" min="1" max="10" value="${val}" oninput="updateRating(${idx},'${mode}','${f.id}',this.value)"></div>`; }).join("")}</div>
+    <div class="uni-notes"><label>Notes from research or conversations</label><textarea placeholder="e.g. Alumni said Career Services rarely helps F-1 students..." oninput="universities[${idx}].notes=this.value">${u.notes||""}</textarea></div>
     <div class="uni-recommendation ${rc}" id="rec-${idx}-${mode}">${rec}</div>
   </div>`;
 }
 
-function addUni(container) { universities.push({name:'',ratings:{},notes:''}); refreshRaters(); }
+function addUni(container) { universities.push({name:"",ratings:{},notes:""}); refreshRaters(); }
 function removeUni(idx) { universities.splice(idx,1); refreshRaters(); }
-function switchMode(btn, mode) { renderUniRater(btn.closest('.uni-rater'), mode); }
+function switchMode(btn, mode) { renderUniRater(btn.closest(".uni-rater"), mode); }
 function refreshRaters() {
-  document.querySelectorAll('.uni-rater').forEach(r => {
-    const ab = r.querySelector('.phase-toggle-btn.active');
-    const mode = ab ? (ab.textContent.includes('Research')?'research':ab.textContent.includes('People')?'peopleTalk':'offers') : 'research';
+  document.querySelectorAll(".uni-rater").forEach(r => {
+    const ab = r.querySelector(".phase-toggle-btn.active");
+    const mode = ab ? (ab.textContent.includes("Research")?"research":ab.textContent.includes("People")?"peopleTalk":"offers") : "research";
     renderUniRater(r, mode);
   });
 }
@@ -662,18 +662,25 @@ function updateRating(idx, mode, fid, val) {
   if (!universities[idx].ratings[mode]) universities[idx].ratings[mode]={};
   universities[idx].ratings[mode][fid]=parseInt(val);
   const lbl=document.getElementById(`lbl-${idx}-${mode}-${fid}`);
-  if(lbl) lbl.textContent=val+'/10';
+  if(lbl) lbl.textContent=val+"/10";
   const tw=factors.reduce((s,f)=>s+f.weight,0);
   const score=factors.reduce((s,f)=>{const v=(universities[idx].ratings[mode]&&universities[idx].ratings[mode][f.id])||5;return s+(v/10)*f.weight;},0);
   const pct=Math.round((score/tw)*100);
   const badge=document.getElementById(`badge-${idx}-${mode}`);
-  if(badge){badge.textContent=pct+'%';badge.className='uni-score-badge '+(pct>=70?'high':pct>=45?'mid':'low');}
+  if(badge){badge.textContent=pct+"%";badge.className="uni-score-badge "+(pct>=70?"high":pct>=45?"mid":"low");}
   const rec=document.getElementById(`rec-${idx}-${mode}`);
   if(rec){
-    if(pct>=70){rec.className='uni-recommendation rec-apply';rec.textContent='Strong fit. If you have an offer, seriously consider accepting.';}
-    else if(pct>=45){rec.className='uni-recommendation rec-negotiate';rec.textContent='Decent fit. Try to negotiate a better scholarship before deciding.';}
-    else{rec.className='uni-recommendation rec-pass';rec.textContent='Weak fit based on your priorities. Consider whether this is worth your time.';}
+    if(pct>=70){rec.className="uni-recommendation rec-apply";rec.textContent="Strong fit. If you have an offer, seriously consider accepting.";}
+    else if(pct>=45){rec.className="uni-recommendation rec-negotiate";rec.textContent="Decent fit. Try to negotiate a better scholarship before deciding.";}
+    else{rec.className="uni-recommendation rec-pass";rec.textContent="Weak fit based on your priorities. Consider whether this is worth your time.";}
   }
+}
+
+// NAVIGATION
+function goTo(pageId) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById(pageId).classList.add("active");
+  window.scrollTo(0, 0);
 }
 
 // PHASES DATA
@@ -741,30 +748,28 @@ const phases = [
   ]},
 ];
 
-// BUILD ROADMAP
 function buildRoadmap() {
-  const name = document.getElementById('studentName').value.trim() || 'You';
-  const country = document.getElementById('homeCountry').value.trim() || 'abroad';
-  const field = document.getElementById('fieldOfStudy').value.trim() || 'your program';
-  const stage = parseInt(document.getElementById('currentStage').value);
-  const goal = document.getElementById('endGoal').value.trim() || 'a full-time role in the US';
-
-  let profile = 'International Student';
+  const name = document.getElementById("studentName").value.trim() || "You";
+  const country = document.getElementById("homeCountry").value.trim() || "abroad";
+  const field = document.getElementById("fieldOfStudy").value.trim() || "your program";
+  const stage = parseInt(document.getElementById("currentStage").value);
+  const goal = document.getElementById("endGoal").value.trim() || "a full-time role in the US";
+  let profile = "International Student";
   if (selectedModules.quiz) profile = deriveProfile();
   studentContext = { name, country, field, stage, goal, profile };
 
-  document.getElementById('studentBar').innerHTML = `
+  document.getElementById("studentBar").innerHTML = `
     <div class="sname">${name}</div>
     <span class="stag">${field}</span>
     <span class="stag">From ${country}</span>
     <span class="stag">${profile}</span>
     <div class="sgoal">Goal: ${goal}</div>`;
 
-  const container = document.getElementById('phasesContainer');
-  container.innerHTML = '';
+  const container = document.getElementById("phasesContainer");
+  container.innerHTML = "";
   totalSteps = 0;
+  completedSteps = new Set();
 
-  // QUIZ SUMMARY (if selected)
   if (selectedModules.quiz) {
     const topFactors = deriveTopFactors();
     const profileDesc = {
@@ -773,16 +778,161 @@ function buildRoadmap() {
       "The Community Seeker": "Belonging matters as much as outcomes. Look for active international student organizations, smaller class sizes, and cities with a diaspora community from your home country.",
       "The Academic Achiever": "Brand and rigor matter to you. Focus on program reputation in your specific field, not general rankings. A strong academic name opens doors with selective employers.",
       "The Purposeful Navigator": "You have a balanced set of priorities. Use the university comparison tool to weigh all factors carefully. Your flexibility is an advantage."
-    }[profile] || '';
-
-    const summaryEl = document.createElement('div');
-    summaryEl.className = 'phase';
-    summaryEl.innerHTML = `
-      <div class="phase-header">
-        <div class="phase-num" style="background:var(--blue-dark);font-size:10px">YOU</div>
-        <div><div class="phase-name">Your University Profile</div><div class="phase-meta">Based on your values assessment</div></div>
-      </div>
+    }[profile] || "";
+    const summaryEl = document.createElement("div");
+    summaryEl.className = "phase";
+    summaryEl.innerHTML = `<div class="phase-header"><div class="phase-num" style="background:var(--blue-dark);font-size:10px">YOU</div><div><div class="phase-name">Your University Profile</div><div class="phase-meta">Based on your values assessment</div></div></div>
       <div style="background:var(--blue-pale);border:1.5px solid var(--blue-light);border-radius:6px;padding:18px 22px;margin-bottom:14px">
-        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--blue);margin-bottom:4px">Your Profile</div>
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--blue);margin-bottom:4px">Your Profile</div>
         <div style="font-size:17px;font-weight:700;color:var(--blue-dark);margin-bottom:6px">${profile}</div>
-        <div style="font-size:13px;color:var(--text-muted);line-height:1.6">${profil
+        <div style="font-size:13px;color:var(--text-muted);line-height:1.6">${profileDesc}</div>
+      </div>
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--blue);margin-bottom:8px">Your Top Factors When Choosing a University</div>
+      ${topFactors.map((f,i) => `<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #eef4fb"><div style="width:20px;height:20px;border-radius:50%;background:var(--blue);color:var(--white);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">${i+1}</div><div style="font-size:13px;color:var(--text);font-weight:${i<3?"700":"400"}">${f.label}</div></div>`).join("")}`;
+    container.appendChild(summaryEl);
+  }
+
+  phases.forEach((phase, pi) => {
+    const isCurrent = pi === stage;
+    const isDone = pi < stage;
+    const phaseEl = document.createElement("div");
+    phaseEl.className = "phase";
+    totalSteps += phase.steps.length;
+    let stepsHtml = "";
+    if (phase.type === "timeline") {
+      stepsHtml = `<div class="timeline">`;
+      phase.steps.forEach((step, si) => {
+        const id = `${pi}-${si}`;
+        if (isDone) completedSteps.add(id);
+        stepsHtml += `<div class="timeline-item ${isDone?"done":""}" id="tli-${id}" onclick="toggleTimeline('${id}')"><div class="tl-month">${step.month}</div><div class="tl-card"><div class="tl-title">${step.title}<div class="tl-check">&#10003;</div></div><div class="tl-desc">${step.desc}</div>${step.tag?`<span class="tl-tag ${step.tag}">${step.tag}</span>`:""}</div></div>`;
+      });
+      stepsHtml += `</div>`;
+    } else {
+      stepsHtml = `<div class="steps-grid">`;
+      phase.steps.forEach((step, si) => {
+        const id = `${pi}-${si}`;
+        if (isDone) completedSteps.add(id);
+        stepsHtml += `<div class="step-card ${isDone?"done":""} ${isCurrent?"current-phase":""}" id="step-${id}" onclick="toggleStep('${id}')"><div class="step-check">&#10003;</div><div class="step-title">${step.title}</div><div class="step-desc">${step.desc}</div><span class="step-tag ${step.tag}">${step.tag||"action"}</span></div>`;
+      });
+      stepsHtml += `</div>`;
+    }
+    phaseEl.innerHTML = `<div class="phase-header"><div class="phase-num ${isCurrent?"current":""}">${phase.num}</div><div><div class="phase-name">${phase.name}${isCurrent?"<span class=\"phase-you-here\">You are here</span>":""}</div><div class="phase-meta">${phase.anchor}</div></div></div>${stepsHtml}`;
+    container.appendChild(phaseEl);
+  });
+
+  if (selectedModules.rater) {
+    const raterEl = document.createElement("div");
+    raterEl.className = "phase";
+    raterEl.innerHTML = `<div class="phase-header"><div class="phase-num" style="font-size:10px">UNI</div><div><div class="phase-name">University Comparison Tool</div><div class="phase-meta">Rate, compare, and decide</div></div></div><div class="uni-rater"></div>`;
+    container.appendChild(raterEl);
+    renderUniRater(raterEl.querySelector(".uni-rater"), "research");
+  } else {
+    const pl = document.createElement("div");
+    pl.className = "optional-placeholder";
+    pl.innerHTML = `<div class="optional-placeholder-title">University Comparison Tool</div><div class="optional-placeholder-desc">Rate and compare programs on 12 weighted factors.</div><button class="optional-add-btn" onclick="selectedModules.rater=true;buildRoadmap()">Add this to my roadmap</button>`;
+    container.appendChild(pl);
+  }
+
+  if (selectedModules.resources) {
+    const resEl = document.createElement("div");
+    resEl.className = "phase";
+    resEl.innerHTML = `<div class="phase-header"><div class="phase-num" style="font-size:10px">RES</div><div><div class="phase-name">Resource Directory</div><div class="phase-meta">Tools to use at every stage</div></div></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px">
+        <div class="resource-card"><div class="resource-cat" style="color:var(--blue)">Program Research</div>
+          <a class="resource-link" href="https://thegradcafe.com" target="_blank"><div class="resource-name">The Grad Cafe</div><div class="resource-desc">Real acceptance data from past applicants at your target schools</div></a>
+          <a class="resource-link" href="https://www.usnews.com/best-graduate-schools" target="_blank"><div class="resource-name">US News Graduate Rankings</div><div class="resource-desc">Rankings by specific field, not just overall university rank</div></a>
+          <a class="resource-link" href="https://educationusa.state.gov" target="_blank"><div class="resource-name">EducationUSA</div><div class="resource-desc">Free US government advising centers in most countries</div></a>
+        </div>
+        <div class="resource-card"><div class="resource-cat" style="color:var(--green)">Scholarships</div>
+          <a class="resource-link" href="https://www.fastweb.com" target="_blank"><div class="resource-name">Fastweb</div><div class="resource-desc">Large scholarship database, filter by your background and field</div></a>
+          <a class="resource-link" href="https://www.internationalscholarships.com" target="_blank"><div class="resource-name">InternationalScholarships.com</div><div class="resource-desc">Scholarships specifically for international students</div></a>
+          <a class="resource-link" href="https://www.profellow.com" target="_blank"><div class="resource-name">ProFellow</div><div class="resource-desc">Fellowships and fully funded programs for graduate students</div></a>
+        </div>
+        <div class="resource-card"><div class="resource-cat" style="color:var(--red)">Visa and H-1B</div>
+          <a class="resource-link" href="https://www.myvisajobs.com" target="_blank"><div class="resource-name">MyVisaJobs</div><div class="resource-desc">Which employers in your field sponsor H-1B. Use before you shortlist schools.</div></a>
+          <a class="resource-link" href="https://h1bgrader.com" target="_blank"><div class="resource-name">H1BGrader</div><div class="resource-desc">Employer H-1B approval and denial history</div></a>
+          <a class="resource-link" href="https://www.uscis.gov/working-in-the-united-states/students-and-exchange-visitors" target="_blank"><div class="resource-name">USCIS Student Resources</div><div class="resource-desc">Official guidance on F-1, OPT, CPT, and work authorization</div></a>
+        </div>
+        <div class="resource-card"><div class="resource-cat" style="color:var(--orange)">Jobs and Salary</div>
+          <a class="resource-link" href="https://joinhandshake.com" target="_blank"><div class="resource-name">Handshake</div><div class="resource-desc">University-connected job board for on-campus and entry-level roles</div></a>
+          <a class="resource-link" href="https://levels.fyi" target="_blank"><div class="resource-name">Levels.fyi</div><div class="resource-desc">Real compensation data by company and role. Use when negotiating.</div></a>
+          <a class="resource-link" href="https://www.glassdoor.com" target="_blank"><div class="resource-name">Glassdoor</div><div class="resource-desc">Salary data, company reviews, and interview experience reports</div></a>
+        </div>
+        <div class="resource-card"><div class="resource-cat" style="color:var(--text-muted)">Community</div>
+          <a class="resource-link" href="https://www.teamblind.com" target="_blank"><div class="resource-name">Blind</div><div class="resource-desc">Anonymous forum. International students post about visa situations and sponsorship.</div></a>
+          <a class="resource-link" href="https://www.reddit.com/r/f1visa" target="_blank"><div class="resource-name">Reddit r/f1visa</div><div class="resource-desc">Real advice from people actively going through the F-1 process</div></a>
+          <a class="resource-link" href="https://www.reddit.com/r/gradadmissions" target="_blank"><div class="resource-name">Reddit r/gradadmissions</div><div class="resource-desc">Application results, SOP advice, and program discussions</div></a>
+        </div>
+      </div>`;
+    container.appendChild(resEl);
+  } else {
+    const pl = document.createElement("div");
+    pl.className = "optional-placeholder";
+    pl.innerHTML = `<div class="optional-placeholder-title">Resource Directory</div><div class="optional-placeholder-desc">Curated links to the best tools for every stage.</div><button class="optional-add-btn" onclick="selectedModules.resources=true;buildRoadmap()">Add this to my roadmap</button>`;
+    container.appendChild(pl);
+  }
+
+  updateProgress();
+  goTo("page-roadmap");
+}
+
+function toggleTimeline(id) {
+  const el = document.getElementById("tli-"+id);
+  if (completedSteps.has(id)) { completedSteps.delete(id); el.classList.remove("done"); }
+  else { completedSteps.add(id); el.classList.add("done"); }
+  updateProgress();
+}
+function toggleStep(id) {
+  const card = document.getElementById("step-"+id);
+  if (completedSteps.has(id)) { completedSteps.delete(id); card.classList.remove("done"); }
+  else { completedSteps.add(id); card.classList.add("done"); }
+  updateProgress();
+}
+function updateProgress() {
+  const done = completedSteps.size;
+  const pct = totalSteps > 0 ? Math.round((done/totalSteps)*100) : 0;
+  document.getElementById("progressText").textContent = `${done} of ${totalSteps} steps complete (${pct}%)`;
+  document.getElementById("progressBar").style.width = `${pct}%`;
+}
+
+function toggleChat() {
+  const w = document.getElementById("chatWindow");
+  const btn = document.getElementById("chatToggle");
+  w.classList.toggle("open");
+  btn.textContent = w.classList.contains("open") ? "Close" : "Ask AI";
+}
+function sendQuick(text) { document.getElementById("chatInput").value = text; sendMessage(); }
+async function sendMessage() {
+  const input = document.getElementById("chatInput");
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = "";
+  const msgs = document.getElementById("chatMessages");
+  const btn = document.getElementById("sendBtn");
+  msgs.innerHTML += `<div class="msg user"><div class="msg-bubble">${esc(text)}</div></div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+  const tid = "ty"+Date.now();
+  msgs.innerHTML += `<div class="msg bot" id="${tid}"><div class="msg-name">Reroot AI</div><div class="msg-bubble"><div class="typing-indicator"><span></span><span></span><span></span></div></div></div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+  btn.disabled = true;
+  const sys = `You are the Reroot AI, a practical advisor for international students navigating the US. Built by an international student from India who studied at University of New Haven (MS in I/O Psychology, GPA 3.96, commencement speaker), transitioned from intern to full-time at Retensa (HR tech), now navigating H-1B. Give specific, lived-in, actionable advice. Under 160 words. For immigration, give practical guidance and note they should confirm with their DSO or immigration attorney. Student: ${studentContext.name||"a student"} from ${studentContext.country||"abroad"}, studying ${studentContext.field||"a US program"}, goal: ${studentContext.goal||"full-time US employment"}.`;
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ model:"claude-sonnet-4-20250514", max_tokens:300, system:sys, messages:[{role:"user",content:text}] })
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || "Could not get a response. Please try again.";
+    document.getElementById(tid).remove();
+    msgs.innerHTML += `<div class="msg bot"><div class="msg-name">Reroot AI</div><div class="msg-bubble">${esc(reply)}</div></div>`;
+  } catch(e) {
+    document.getElementById(tid).remove();
+    msgs.innerHTML += `<div class="msg bot"><div class="msg-name">Reroot AI</div><div class="msg-bubble">Something went wrong. Please try again.</div></div>`;
+  }
+  btn.disabled = false;
+  msgs.scrollTop = msgs.scrollHeight;
+}
+function esc(t) { return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>"); }
+</script>
+</body>
+</html>
