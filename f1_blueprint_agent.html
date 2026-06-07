@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>F-1 Blueprint — Content Agent</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, Helvetica, sans-serif; background: #f4f8fc; color: #1a2e42; font-size: 14px; min-height: 100vh; }
+  .header { background: #fff; border-bottom: 2px solid #c5dff0; padding: 18px 32px; display: flex; align-items: center; gap: 16px; }
+  .header h1 { font-size: 17px; font-weight: 700; color: #1a2e42; }
+  .header .badge { font-size: 11px; background: #daeeff; color: #1a5a9a; border-radius: 3px; padding: 3px 10px; font-weight: 700; }
+  .layout { display: grid; grid-template-columns: 320px 1fr; height: calc(100vh - 60px); }
+  .sidebar { background: #fff; border-right: 1px solid #c5dff0; display: flex; flex-direction: column; }
+  .sidebar-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #5a7a9a; padding: 16px 20px 10px; border-bottom: 1px solid #c5dff0; }
+  .example-list { overflow-y: auto; flex: 1; }
+  .example-item { padding: 12px 20px; border-bottom: 1px solid #e8f2fb; cursor: pointer; transition: background 0.13s; }
+  .example-item:hover { background: #f0f7ff; }
+  .example-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #5a7a9a; margin-bottom: 3px; }
+  .example-text { font-size: 13px; color: #1a2e42; line-height: 1.4; }
+  .main { display: flex; flex-direction: column; }
+  .content-display { flex: 1; overflow-y: auto; padding: 24px 28px; }
+  .section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #5a7a9a; margin-bottom: 12px; }
+  .content-block { background: #fff; border: 1px solid #c5dff0; border-radius: 6px; padding: 18px 22px; margin-bottom: 16px; }
+  .content-block-title { font-size: 13px; font-weight: 700; color: #1a2e42; margin-bottom: 8px; }
+  .content-item { font-size: 12px; color: #5a7a9a; padding: 5px 0; border-bottom: 1px solid #e8f2fb; line-height: 1.5; }
+  .content-item:last-child { border-bottom: none; }
+  .content-item strong { color: #1a2e42; }
+  .agent-panel { border-top: 2px solid #c5dff0; background: #fff; padding: 18px 24px; }
+  .agent-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #5a7a9a; margin-bottom: 10px; }
+  .agent-input-row { display: flex; gap: 10px; }
+  .agent-input { flex: 1; border: 1.5px solid #c5dff0; border-radius: 5px; padding: 11px 14px; font-family: Arial; font-size: 13px; color: #1a2e42; outline: none; resize: none; height: 52px; }
+  .agent-input:focus { border-color: #2a7abf; }
+  .agent-btn { padding: 0 22px; background: #2a7abf; color: #fff; border: none; border-radius: 5px; font-family: Arial; font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.15s; white-space: nowrap; }
+  .agent-btn:hover { background: #1a5a9a; }
+  .agent-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .response-area { margin-top: 14px; max-height: 260px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+  .response-block { padding: 12px 16px; border-radius: 5px; font-size: 13px; line-height: 1.6; }
+  .response-block.user { background: #daeeff; color: #1a5a9a; font-weight: 600; }
+  .response-block.agent { background: #f4f8fc; border: 1px solid #c5dff0; color: #1a2e42; white-space: pre-wrap; }
+  .response-block.agent .tag { display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; margin-right: 6px; }
+  .response-block.agent .tag.update { background: #e8f8f2; color: #27ae60; }
+  .response-block.agent .tag.add { background: #daeeff; color: #2a7abf; }
+  .response-block.agent .tag.remove { background: #fdeaea; color: #c0392b; }
+  .typing { display: flex; gap: 4px; align-items: center; padding: 4px 0; }
+  .typing span { width: 6px; height: 6px; background: #5a7a9a; border-radius: 50%; animation: bounce 1.2s infinite; }
+  .typing span:nth-child(2) { animation-delay: 0.2s; }
+  .typing span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce { 0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)} }
+  .copy-btn { display: block; margin-top: 10px; padding: 8px 16px; background: #1a5a9a; color: #fff; border: none; border-radius: 4px; font-family: Arial; font-size: 12px; font-weight: 700; cursor: pointer; }
+  .copy-btn:hover { background: #0e3d6e; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>F-1 Blueprint — Content Management Agent</h1>
+  <span class="badge">For Ekta only</span>
+</div>
+
+<div class="layout">
+  <!-- SIDEBAR: Example commands -->
+  <div class="sidebar">
+    <div class="sidebar-title">Example commands you can give</div>
+    <div class="example-list">
+      <div class="example-item" onclick="fillInput('Add a new step to First Semester: students should open a local phone plan in their first week — T-Mobile and Mint Mobile have international-friendly options')">
+        <div class="example-label">Add a step</div>
+        <div class="example-text">Add a new step to First Semester about getting a phone plan</div>
+      </div>
+      <div class="example-item" onclick="fillInput('Update the CPT description in Second Semester to mention that part-time CPT does not affect OPT eligibility')">
+        <div class="example-label">Update a step</div>
+        <div class="example-text">Update the CPT step to add that part-time CPT does not affect OPT</div>
+      </div>
+      <div class="example-item" onclick="fillInput('Remove the commencement speaker step from Final Semester — it is too specific')">
+        <div class="example-label">Remove a step</div>
+        <div class="example-text">Remove the commencement speaker step — too specific</div>
+      </div>
+      <div class="example-item" onclick="fillInput('Add a whole new phase between Second Semester and Summer about mental health and cultural adjustment — include steps on finding community, managing homesickness, and knowing when to ask for help')">
+        <div class="example-label">Add a new phase</div>
+        <div class="example-text">Add a mental health and cultural adjustment phase</div>
+      </div>
+      <div class="example-item" onclick="fillInput('Rewrite the Getting In phase intro to emphasize that funding research must come before program shortlisting — many students get this backwards')">
+        <div class="example-label">Rewrite a section</div>
+        <div class="example-text">Rewrite Getting In phase intro to emphasize funding first</div>
+      </div>
+      <div class="example-item" onclick="fillInput('Add a factor to the University Rater: diversity and inclusion — how welcoming is the school to international students from South Asia')">
+        <div class="example-label">Update the rater</div>
+        <div class="example-text">Add South Asian student diversity as a rater factor</div>
+      </div>
+      <div class="example-item" onclick="fillInput('What does the current roadmap cover in the Summer phase?')">
+        <div class="example-label">Review content</div>
+        <div class="example-text">What does the Summer phase currently cover?</div>
+      </div>
+      <div class="example-item" onclick="fillInput('Suggest 3 new steps I might be missing for the Visa and Pre-Arrival phase based on common F-1 student mistakes')">
+        <div class="example-label">Get suggestions</div>
+        <div class="example-text">Suggest steps I might be missing in Visa and Pre-Arrival</div>
+      </div>
+      <div class="example-item" onclick="fillInput('Rename Second Semester to Second Semester — Convert Networks to Offers')">
+        <div class="example-label">Rename a phase</div>
+        <div class="example-text">Rename Second Semester with a more descriptive title</div>
+      </div>
+      <div class="example-item" onclick="fillInput('I just learned that some universities require F-1 students to register with local police within 30 days of arrival. Add this as an urgent step in Visa and Pre-Arrival.')">
+        <div class="example-label">Add from new knowledge</div>
+        <div class="example-text">Add local police registration as urgent step in Visa phase</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN: Current content + agent -->
+  <div class="main">
+    <div class="content-display">
+      <div class="section-label">Current Roadmap Structure</div>
+      <div id="contentView"></div>
+    </div>
+
+    <div class="agent-panel">
+      <div class="agent-label">Tell the agent what to add, update, remove, or suggest</div>
+      <div class="agent-input-row">
+        <textarea class="agent-input" id="agentInput" placeholder="e.g. Add a step to First Semester about getting a US phone plan..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();runAgent();}"></textarea>
+        <button class="agent-btn" id="agentBtn" onclick="runAgent()">Send</button>
+      </div>
+      <div class="response-area" id="responseArea"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const roadmapContent = {
+  phases: [
+    { name: "Getting In", anchor: "Starting 20 months before arrival", steps: ["Research scholarship categories (merit, need-based, country-specific, assistantships)", "Shortlist 8-12 programs — balance reach, match, safety. Check CPT eligibility timelines", "GRE / GMAT / IELTS / TOEFL preparation — know which each program requires", "Write Statement of Purpose — specific, name professors, target career outcomes", "Request Letters of Recommendation — give recommenders your SOP and resume", "Rate and prioritize offers using the University Rater", "Negotiate scholarships using competing offers"] },
+    { name: "Rate and Choose Your University", anchor: "During research, after conversations, and when offers arrive", steps: ["Rate on 12 factors: scholarship, career services, CPT timeline, on-campus jobs, alumni network, location, reputation, class size, professor access, housing cost, internship placement rate, international student support", "Three phases: initial research, after talking to alumni, after receiving offers", "Each factor is weighted — heavily weighted: scholarship, career services, CPT, alumni, internship placement", "Score generates a recommendation: strong fit / negotiate / pass"] },
+    { name: "Visa and Pre-Arrival", anchor: "3 to 6 months before arrival", steps: ["Receive and review I-20 — check program end date and enrollment level", "Pay SEVIS fee ($350) before visa interview — keep receipt", "Book F-1 visa interview early — wait times can be months", "Secure housing before arrival — on-campus fills fast", "Plan US bank account — research options before landing", "Research health insurance requirements for international students"] },
+    { name: "First Semester", anchor: "Months 1 to 5 on campus", steps: ["Attend all International Student Orientation sessions", "Visit Career Services in week one — get resume reviewed, join mailing lists", "Update resume to US standards — no photo, no DOB, action verbs, quantified results", "Join 2-3 clubs strategically — one professional, one cultural, one leadership", "Visit professors in office hours in first two weeks", "Activate LinkedIn on day one — connect with alumni", "Start coffee chats in Semester 1 — 2-3 per week on LinkedIn", "Understand CPT eligibility timeline from your DSO", "Get Social Security Number if on-campus job is available"] },
+    { name: "Second Semester", anchor: "Months 5 to 10 on campus", steps: ["Follow up with Semester 1 connections for internship referrals", "Apply to summer internships starting January — Handshake, LinkedIn, direct applications", "Tailor every application to the job description", "Practice behavioral interviews using STAR method — record yourself", "File CPT authorization before accepting any offer", "Keep sending coffee chat requests every week", "Track every application in a spreadsheet"] },
+    { name: "Summer", anchor: "Summer between Year 1 and Year 2", steps: ["Go above and beyond from week one — volunteer for stretch projects", "Document every deliverable as you complete it — save outputs and feedback", "Apply to fall/spring internships in parallel", "Keep networking inside and outside the company", "Ask for feedback at week 5 — not the end", "Update LinkedIn with internship experience"] },
+    { name: "Third Semester", anchor: "Months 11 to 16 on campus", steps: ["Take on a leadership role in at least one club — document what you built", "Apply to full-time roles and internships simultaneously", "Filter every application by H-1B sponsorship history using MyVisaJobs or H1BGrader", "Interview actively — write debrief notes after each one", "Aim to have an offer before Semester 4 begins", "Post on LinkedIn weekly as a subject matter voice in your field"] },
+    { name: "Final Semester", anchor: "Months 17 to 20 and beyond", steps: ["Apply for OPT 90 days before graduation — processing takes 3-5 months", "Start H-1B conversation with employer in January", "Negotiate offer — use Levels.fyi and Glassdoor for market rate", "Apply to be commencement speaker", "Write your journey on LinkedIn — share it", "Pass it forward — offer coffee chats to next cohort"] }
+  ]
+};
+
+// Render current content
+function renderContent() {
+  const view = document.getElementById('contentView');
+  view.innerHTML = roadmapContent.phases.map((p, i) => `
+    <div class="content-block">
+      <div class="content-block-title">Phase ${i+1}: ${p.name} <span style="font-size:11px;color:#5a7a9a;font-weight:400">— ${p.anchor}</span></div>
+      ${p.steps.map(s => `<div class="content-item">${s}</div>`).join('')}
+    </div>
+  `).join('');
+}
+renderContent();
+
+function fillInput(text) {
+  document.getElementById('agentInput').value = text;
+  document.getElementById('agentInput').focus();
+}
+
+async function runAgent() {
+  const input = document.getElementById('agentInput');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  const area = document.getElementById('responseArea');
+  const btn = document.getElementById('agentBtn');
+
+  area.innerHTML += `<div class="response-block user">${esc(text)}</div>`;
+  area.scrollTop = area.scrollHeight;
+
+  const tid = 'ty'+Date.now();
+  area.innerHTML += `<div class="response-block agent" id="${tid}"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  area.scrollTop = area.scrollHeight;
+  btn.disabled = true;
+
+  const currentContent = JSON.stringify(roadmapContent, null, 2);
+
+  const sys = `You are the content management agent for The F-1 Blueprint — a roadmap tool for international students navigating the US. The tool was built by Ekta Mulchandani, an international student from India who did her MS in I/O Psychology at University of New Haven (GPA 3.96, commencement speaker), transitioned from intern to full-time at Retensa (HR tech), and is now navigating H-1B sponsorship.
+
+Your job is to help Ekta update and improve the roadmap content. When she asks you to add, update, remove, or reorganize content, respond with:
+1. What change you are making (label it clearly: ADD / UPDATE / REMOVE / RENAME / SUGGEST)
+2. The exact new or updated text she should use, formatted cleanly so she can copy and paste it
+3. Any brief reasoning if relevant
+
+Writing rules for all roadmap content:
+- Plain English. No jargon.
+- Action-oriented. Every step should start with a verb or be a clear directive.
+- Specific and lived-in. Not generic advice you find on any website.
+- No passive voice.
+- Steps should be 1-2 sentences of description maximum.
+- Tags are: urgent, visa, career, or blank (action)
+- Always anchor steps to a timeframe when relevant (week one, Month 5, etc.)
+
+Current roadmap content:
+${currentContent}
+
+Respond in a clean, readable format. When providing updated text, format it clearly so Ekta can copy and implement it. If she is asking a question about the content, answer it directly.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:800, system:sys, messages:[{role:'user',content:text}] })
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || "Could not get a response.";
+    document.getElementById(tid).innerHTML = `${esc(reply)}<button class="copy-btn" onclick="copyText(this)">Copy this response</button>`;
+  } catch(e) {
+    document.getElementById(tid).textContent = "Something went wrong. Please try again.";
+  }
+  btn.disabled = false;
+  area.scrollTop = area.scrollHeight;
+}
+
+function copyText(btn) {
+  const block = btn.parentElement;
+  const text = block.innerText.replace('Copy this response','').trim();
+  navigator.clipboard.writeText(text).then(() => { btn.textContent = 'Copied!'; setTimeout(() => btn.textContent = 'Copy this response', 2000); });
+}
+
+function esc(t) { return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
+</script>
+</body>
+</html>
