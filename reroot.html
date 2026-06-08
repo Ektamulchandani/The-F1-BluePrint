@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reroot</title>
+<style>
+  :root {
+    --bg: #f4f8fc;
+    --bg-mid: #e8f2fb;
+    --blue: #2a7abf;
+    --blue-dark: #1a5a9a;
+    --blue-light: #5ba3d9;
+    --blue-pale: #daeeff;
+    --text: #1a2e42;
+    --text-muted: #5a7a9a;
+    --border: #c5dff0;
+    --white: #ffffff;
+    --red: #c0392b;
+    --green: #27ae60;
+    --orange: #e67e22;
+    --grey: #b0c4d8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, Helvetica, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 14px; }
+
+  /* PAGES */
+  .page { display: none; min-height: 100vh; }
+  .page.active { display: block; }
+
+  /* NAV */
+  .nav { background: var(--white); border-bottom: 1.5px solid var(--border); padding: 14px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo { font-size: 20px; font-weight: 700; color: var(--blue); letter-spacing: -0.5px; }
+  .nav-logo span { color: var(--text); }
+  .nav-steps { display: flex; align-items: center; gap: 6px; }
+  .nav-step { font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 3px; color: var(--text-muted); background: var(--bg-mid); }
+  .nav-step.active { background: var(--blue); color: var(--white); }
+  .nav-step.done { background: var(--blue-pale); color: var(--blue-dark); }
+
+  /* LANDING */
+  .landing-hero { padding: 80px 40px 60px; text-align: center; background: var(--white); border-bottom: 1.5px solid var(--border); }
+  .landing-eyebrow { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--blue); margin-bottom: 14px; font-weight: 700; }
+  .landing-hero h1 { font-size: clamp(32px, 5vw, 56px); font-weight: 700; color: var(--text); line-height: 1.1; margin-bottom: 16px; }
+  .landing-hero h1 span { color: var(--blue); }
+  .landing-hero p { font-size: 16px; color: var(--text-muted); max-width: 520px; margin: 0 auto 32px; line-height: 1.7; }
+  .landing-cta { display: inline-block; background: var(--blue); color: var(--white); padding: 14px 36px; border-radius: 5px; font-size: 15px; font-weight: 700; border: none; cursor: pointer; font-family: Arial; transition: background 0.15s; }
+  .landing-cta:hover { background: var(--blue-dark); }
+  .landing-sub { font-size: 12px; color: var(--text-muted); margin-top: 12px; }
+
+  /* WHAT IT COVERS */
+  .landing-covers { max-width: 900px; margin: 0 auto; padding: 56px 24px; }
+  .section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--blue); margin-bottom: 20px; }
+  .covers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-bottom: 48px; }
+  .cover-item { background: var(--white); border: 1.5px solid var(--border); border-radius: 6px; padding: 16px 18px; }
+  .cover-num { font-size: 11px; font-weight: 700; color: var(--blue); margin-bottom: 5px; }
+  .cover-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .cover-desc { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+
+  /* WHO ITS FOR */
+  .for-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 48px; }
+  @media(max-width:600px){ .for-grid { grid-template-columns: 1fr; } }
+  .for-card { background: var(--white); border: 1.5px solid var(--border); border-radius: 6px; padding: 20px 22px; }
+  .for-card.yes { border-color: var(--blue); }
+  .for-card.no { opacity: 0.6; }
+  .for-card-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+  .for-card.yes .for-card-label { color: var(--blue); }
+  .for-card.no .for-card-label { color: var(--text-muted); }
+  .for-item { font-size: 13px; color: var(--text); padding: 5px 0; border-bottom: 1px solid #eef4fb; display: flex; gap: 8px; align-items: flex-start; }
+  .for-item:last-child { border-bottom: none; }
+  .for-item .tick { color: var(--blue); font-weight: 700; flex-shrink: 0; }
+  .for-item .cross { color: var(--grey); font-weight: 700; flex-shrink: 0; }
+
+  /* BUILT BY */
+  .built-by { background: var(--blue-pale); border: 1.5px solid var(--blue-light); border-radius: 8px; padding: 24px 28px; margin-bottom: 40px; }
+  .built-by-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--blue); margin-bottom: 8px; }
+  .built-by-text { font-size: 14px; color: var(--text); line-height: 1.7; }
+
+  .landing-cta-bottom { display: block; width: 100%; max-width: 400px; margin: 0 auto; background: var(--blue); color: var(--white); padding: 15px; border-radius: 5px; font-size: 15px; font-weight: 700; border: none; cursor: pointer; font-family: Arial; transition: background 0.15s; text-align: center; }
+  .landing-cta-bottom:hover { background: var(--blue-dark); }
+
+  /* PATH CHOOSER */
+  .path-wrap { max-width: 760px; margin: 0 auto; padding: 40px 24px 80px; }
+  .page-title { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .page-sub { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 28px; }
+  .module-grid { display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
+  .module-card { background: var(--white); border: 1.5px solid var(--border); border-radius: 8px; padding: 20px 22px; display: flex; align-items: flex-start; gap: 16px; cursor: pointer; transition: all 0.15s; }
+  .module-card:hover { border-color: var(--blue-light); }
+  .module-card.selected { border-color: var(--blue); background: var(--blue-pale); }
+  .module-card.mandatory { border-color: var(--blue); background: var(--blue-pale); cursor: default; }
+  .module-toggle { width: 22px; height: 22px; border-radius: 4px; border: 1.5px solid var(--border); background: var(--white); flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: transparent; transition: all 0.15s; }
+  .module-card.selected .module-toggle { background: var(--blue); border-color: var(--blue); color: var(--white); }
+  .module-card.mandatory .module-toggle { background: var(--blue); border-color: var(--blue); color: var(--white); }
+  .module-badge { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 8px; border-radius: 3px; display: inline-block; margin-bottom: 5px; }
+  .badge-required { background: var(--blue); color: var(--white); }
+  .badge-optional { background: var(--bg-mid); color: var(--text-muted); }
+  .module-name { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .module-desc { font-size: 12px; color: var(--text-muted); line-height: 1.55; }
+  .module-time { font-size: 11px; color: var(--blue); margin-top: 5px; font-weight: 700; }
+
+  /* SETUP */
+  .setup-wrap { max-width: 680px; margin: 0 auto; padding: 40px 24px 80px; }
+  .card { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 28px 32px; margin-bottom: 20px; }
+  .setup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media(max-width:600px){ .setup-grid { grid-template-columns: 1fr; } }
+  label { display: block; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 5px; font-weight: 700; }
+  input, select, textarea { width: 100%; background: var(--white); border: 1.5px solid var(--border); border-radius: 5px; padding: 10px 13px; color: var(--text); font-family: Arial; font-size: 13px; outline: none; transition: border-color 0.2s; }
+  input:focus, select:focus { border-color: var(--blue); }
+  .btn { padding: 11px 24px; border-radius: 5px; border: none; font-family: Arial; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.15s; }
+  .btn-primary { background: var(--blue); color: var(--white); }
+  .btn-primary:hover { background: var(--blue-dark); }
+  .btn-secondary { background: var(--bg-mid); color: var(--text-muted); border: 1px solid var(--border); }
+  .btn-full { width: 100%; padding: 13px; font-size: 14px; }
+
+  /* ROADMAP */
+  .roadmap-wrap { max-width: 860px; margin: 0 auto; padding: 32px 24px 100px; }
+  .student-bar { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 16px 22px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .student-bar .sname { font-size: 15px; font-weight: 700; color: var(--text); }
+  .stag { font-size: 11px; background: var(--blue-pale); border-radius: 3px; padding: 3px 10px; color: var(--blue-dark); font-weight: 600; }
+  .sgoal { font-size: 12px; color: var(--blue); margin-left: auto; font-style: italic; }
+  .progress-wrap { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 16px 22px; margin-bottom: 28px; }
+  .progress-top { display: flex; justify-content: space-between; margin-bottom: 8px; }
+  .progress-top span { font-size: 12px; color: var(--text-muted); }
+  .progress-top strong { font-size: 13px; color: var(--blue); font-weight: 700; }
+  .bar-bg { background: var(--blue-pale); border-radius: 3px; height: 7px; }
+  .bar-fg { height: 7px; border-radius: 3px; background: var(--blue); transition: width 0.5s ease; }
+
+  /* PHASES */
+  .phase { margin-bottom: 44px; }
+  .phase-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 2px solid var(--border); }
+  .phase-num { width: 34px; height: 34px; border-radius: 50%; background: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--white); flex-shrink: 0; font-weight: 700; }
+  .phase-num.current { background: var(--blue-dark); box-shadow: 0 0 0 4px var(--blue-pale); }
+  .phase-name { font-size: 16px; font-weight: 700; color: var(--text); }
+  .phase-meta { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .phase-you-here { display: inline-block; margin-left: 8px; font-size: 10px; background: var(--blue); color: var(--white); border-radius: 3px; padding: 2px 8px; font-weight: 700; vertical-align: middle; }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 26px; }
+  .timeline::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: var(--border); }
+  .timeline-item { position: relative; margin-bottom: 18px; }
+  .timeline-item::before { content: ''; position: absolute; left: -23px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--blue-light); border: 2px solid var(--white); box-shadow: 0 0 0 2px var(--blue-light); }
+  .timeline-item.done::before { background: var(--blue); box-shadow: 0 0 0 2px var(--blue); }
+  .tl-month { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--blue); font-weight: 700; margin-bottom: 4px; }
+  .tl-card { background: var(--white); border: 1px solid var(--border); border-radius: 6px; padding: 13px 15px; cursor: pointer; transition: all 0.15s; }
+  .tl-card:hover { border-color: var(--blue-light); }
+  .timeline-item.done .tl-card { border-color: var(--blue); background: var(--blue-pale); }
+  .tl-title { font-weight: 700; font-size: 13px; color: var(--text); margin-bottom: 4px; display: flex; align-items: center; justify-content: space-between; }
+  .tl-check { width: 17px; height: 17px; border-radius: 50%; border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 10px; color: transparent; flex-shrink: 0; transition: all 0.2s; }
+  .timeline-item.done .tl-check { background: var(--blue); border-color: var(--blue); color: var(--white); }
+  .tl-desc { font-size: 12px; color: var(--text-muted); line-height: 1.55; margin-bottom: 5px; }
+  .tl-tag { font-size: 10px; padding: 2px 8px; border-radius: 3px; background: var(--bg-mid); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; display: inline-block; font-weight: 700; }
+  .tl-tag.urgent { background: #fdeaea; color: var(--red); }
+  .tl-tag.visa { background: #e8f4fd; color: var(--blue); }
+  .tl-tag.career { background: #e8f8f2; color: var(--green); }
+
+  /* STEPS GRID */
+  .steps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+  .step-card { background: var(--white); border: 1.5px solid var(--border); border-radius: 6px; padding: 16px 18px; cursor: pointer; transition: all 0.15s; position: relative; }
+  .step-card:hover { border-color: var(--blue-light); }
+  .step-card.done { border-color: var(--blue); background: var(--blue-pale); }
+  .step-card.current-phase { border-color: var(--blue-light); }
+  .step-check { position: absolute; top: 12px; right: 12px; width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 10px; color: transparent; transition: all 0.2s; }
+  .step-card.done .step-check { background: var(--blue); border-color: var(--blue); color: var(--white); }
+  .step-title { font-weight: 700; font-size: 13px; color: var(--text); margin-bottom: 5px; padding-right: 26px; }
+  .step-desc { font-size: 12px; color: var(--text-muted); line-height: 1.55; }
+  .step-tag { display: inline-block; margin-top: 8px; font-size: 10px; padding: 2px 8px; border-radius: 3px; background: var(--bg-mid); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; }
+  .step-tag.urgent { background: #fdeaea; color: var(--red); }
+  .step-tag.visa { background: #e8f4fd; color: var(--blue); }
+  .step-tag.career { background: #e8f8f2; color: var(--green); }
+
+  /* LIKERT */
+  .likert-section { margin-bottom: 24px; }
+  .likert-section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--blue); border-bottom: 1.5px solid var(--border); padding-bottom: 7px; margin-bottom: 12px; }
+  .likert-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid #eef4fb; }
+  .likert-row:last-child { border-bottom: none; }
+  .likert-statement { flex: 1; font-size: 13px; color: var(--text); line-height: 1.45; min-width: 0; }
+  .likert-scale { display: flex; gap: 5px; flex-shrink: 0; }
+  .likert-btn { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--border); background: var(--white); cursor: pointer; font-size: 11px; font-weight: 700; color: var(--text-muted); transition: all 0.15s; font-family: Arial; }
+  .likert-btn:hover { border-color: var(--blue-light); background: var(--blue-pale); }
+  .likert-btn.selected { background: var(--blue); border-color: var(--blue); color: var(--white); }
+  .likert-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); margin-bottom: 6px; }
+
+  /* UNI RATER */
+  .uni-phase-toggle { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+  .phase-toggle-btn { padding: 5px 12px; border: 1.5px solid var(--border); border-radius: 4px; font-size: 11px; font-weight: 700; background: var(--white); color: var(--text-muted); cursor: pointer; font-family: Arial; transition: all 0.15s; }
+  .phase-toggle-btn.active { background: var(--blue); border-color: var(--blue); color: var(--white); }
+  .phase-note { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; background: var(--bg-mid); border-radius: 4px; padding: 8px 12px; line-height: 1.5; }
+  .uni-rater-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .add-uni-btn { padding: 6px 13px; background: var(--blue); color: var(--white); border: none; border-radius: 4px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: Arial; }
+  .uni-card { background: var(--white); border: 1.5px solid var(--border); border-radius: 6px; padding: 18px 20px; margin-bottom: 14px; }
+  .uni-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .uni-name-input { font-size: 14px; font-weight: 700; color: var(--text); border: none; background: transparent; font-family: Arial; outline: none; flex: 1; }
+  .uni-name-input::placeholder { color: var(--text-muted); font-weight: 400; }
+  .uni-score-badge { font-size: 13px; font-weight: 700; color: var(--white); background: var(--blue); border-radius: 4px; padding: 4px 12px; min-width: 56px; text-align: center; }
+  .uni-score-badge.high { background: var(--green); }
+  .uni-score-badge.mid { background: var(--orange); }
+  .uni-score-badge.low { background: var(--red); }
+  .factors-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media(max-width:500px){ .factors-grid { grid-template-columns: 1fr; } }
+  .factor-row { display: flex; flex-direction: column; gap: 3px; }
+  .factor-label { font-size: 11px; font-weight: 700; color: var(--text); display: flex; justify-content: space-between; }
+  .factor-label span { color: var(--blue); }
+  .factor-source { font-size: 10px; color: var(--text-muted); font-style: italic; }
+  .factor-slider { width: 100%; accent-color: var(--blue); cursor: pointer; }
+  .uni-notes textarea { font-size: 12px; height: 52px; resize: none; margin-top: 10px; }
+  .uni-recommendation { margin-top: 10px; padding: 9px 13px; border-radius: 5px; font-size: 12px; line-height: 1.5; font-weight: 600; }
+  .rec-apply { background: #e8f8f2; color: var(--green); border: 1px solid #b2dfcc; }
+  .rec-negotiate { background: #fff8e8; color: var(--orange); border: 1px solid #f0d9a0; }
+  .rec-pass { background: #fdeaea; color: var(--red); border: 1px solid #f5c2c2; }
+  .remove-uni { font-size: 11px; color: var(--text-muted); background: none; border: none; cursor: pointer; font-family: Arial; }
+  .remove-uni:hover { color: var(--red); }
+
+  /* RESOURCES */
+  .resource-card { background: var(--white); border: 1.5px solid var(--border); border-radius: 6px; padding: 16px 18px; }
+  .resource-cat { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+  .resource-link { display: block; text-decoration: none; color: var(--text); padding: 7px 0; border-bottom: 1px solid #eef4fb; }
+  .resource-link:last-child { border-bottom: none; }
+  .resource-link:hover .resource-name { color: var(--blue); }
+  .resource-name { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+  .resource-desc { font-size: 11px; color: var(--text-muted); line-height: 1.45; }
+
+  /* OPTIONAL MODULE PLACEHOLDER */
+  .optional-placeholder { background: var(--white); border: 1.5px dashed var(--border); border-radius: 8px; padding: 24px; text-align: center; margin-bottom: 44px; }
+  .optional-placeholder-title { font-size: 14px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; }
+  .optional-placeholder-desc { font-size: 12px; color: var(--grey); margin-bottom: 14px; }
+  .optional-add-btn { padding: 8px 18px; background: transparent; border: 1.5px solid var(--border); border-radius: 4px; font-size: 12px; font-weight: 700; color: var(--text-muted); cursor: pointer; font-family: Arial; transition: all 0.15s; }
+  .optional-add-btn:hover { border-color: var(--blue); color: var(--blue); }
+
+  /* CHAT */
+  .chat-section { position: fixed; bottom: 22px; right: 22px; z-index: 100; }
+  .chat-toggle { padding: 10px 18px; background: var(--blue); border-radius: 4px; border: none; cursor: pointer; font-size: 13px; font-weight: 700; color: var(--white); font-family: Arial; box-shadow: 0 4px 16px #2a7abf40; transition: background 0.2s; }
+  .chat-toggle:hover { background: var(--blue-dark); }
+  .chat-window { display: none; position: absolute; bottom: 50px; right: 0; width: 340px; background: var(--white); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: 0 12px 40px #1a2e4230; flex-direction: column; }
+  .chat-window.open { display: flex; flex-direction: column; }
+  .chat-header { background: var(--blue); padding: 13px 16px; display: flex; align-items: center; gap: 10px; }
+  .chat-avatar { width: 30px; height: 30px; background: var(--white); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--blue); font-weight: 800; }
+  .chat-header-name { font-size: 13px; font-weight: 700; color: var(--white); }
+  .chat-header-status { font-size: 11px; color: #a8d4f5; }
+  .chat-messages { height: 290px; overflow-y: auto; padding: 13px; display: flex; flex-direction: column; gap: 9px; }
+  .chat-messages::-webkit-scrollbar { width: 4px; }
+  .chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  .msg { max-width: 85%; font-size: 12px; line-height: 1.55; }
+  .msg.bot { align-self: flex-start; }
+  .msg.user { align-self: flex-end; }
+  .msg-bubble { padding: 9px 12px; border-radius: 6px; }
+  .msg.bot .msg-bubble { background: var(--bg-mid); color: var(--text); }
+  .msg.user .msg-bubble { background: var(--blue); color: var(--white); }
+  .msg-name { font-size: 10px; color: var(--text-muted); margin-bottom: 3px; font-weight: 700; }
+  .quick-prompts { padding: 0 12px 8px; display: flex; flex-wrap: wrap; gap: 5px; }
+  .quick-prompt { font-size: 11px; padding: 4px 9px; border-radius: 3px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer; transition: all 0.13s; font-family: Arial; }
+  .quick-prompt:hover { border-color: var(--blue); color: var(--blue); }
+  .chat-input-row { display: flex; gap: 7px; padding: 9px 12px; border-top: 1px solid var(--border); }
+  .chat-input { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 8px 11px; color: var(--text); font-size: 12px; outline: none; font-family: Arial; }
+  .chat-input:focus { border-color: var(--blue); }
+  .chat-send { width: 34px; height: 34px; background: var(--blue); border: none; border-radius: 4px; cursor: pointer; color: var(--white); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 13px; }
+  .chat-send:hover { background: var(--blue-dark); }
+  .chat-send:disabled { opacity: 0.4; cursor: not-allowed; }
+  .typing-indicator { display: flex; gap: 4px; align-items: center; }
+  .typing-indicator span { width: 5px; height: 5px; background: var(--text-muted); border-radius: 50%; animation: bounce 1.2s infinite; }
+  .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+  .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce { 0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)} }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1: LANDING -->
+<div class="page active" id="page-landing">
+  <div class="nav">
+    <div class="nav-logo">Re<span>root</span></div>
+  </div>
+
+  <div class="landing-hero">
+    <div class="landing-eyebrow">For international students navigating the US</div>
+    <h1>You pulled your roots.<br><span>Now plant them.</span></h1>
+    <p>Reroot is a free, step-by-step guide for international students, from the moment you decide to apply to a US program, to the moment you sign a full-time offer. Built by someone who lived every step of it.</p>
+    <button class="landing-cta" onclick="goTo('page-path')">Get Started</button>
+    <div class="landing-sub">Free. No account needed. Takes 2 minutes to set up.</div>
+  </div>
+
+  <div class="landing-covers">
+    <div class="section-label">What Reroot covers</div>
+    <div class="covers-grid">
+      <div class="cover-item"><div class="cover-num">Phase 1</div><div class="cover-title">Getting In</div><div class="cover-desc">Scholarships, program shortlisting, GRE, SOP, and letters of recommendation, anchored to real timelines</div></div>
+      <div class="cover-item"><div class="cover-num">Phase 2</div><div class="cover-title">Choosing Your University</div><div class="cover-desc">A rating tool to compare programs on the factors that actually matter, including CPT, career services, and alumni networks</div></div>
+      <div class="cover-item"><div class="cover-num">Phase 3</div><div class="cover-title">Visa and Pre-Arrival</div><div class="cover-desc">I-20, SEVIS fee, visa interview, housing, banking, and health insurance, before you land</div></div>
+      <div class="cover-item"><div class="cover-num">Phase 4</div><div class="cover-title">First Semester</div><div class="cover-desc">Career services, US resume standards, clubs, professors, LinkedIn, coffee chats, and CPT timeline</div></div>
+      <div class="cover-item"><div class="cover-num">Phase 5</div><div class="cover-title">Internship Hunt</div><div class="cover-desc">Referrals, CPT authorization, Handshake, behavioral interviews, and application tracking</div></div>
+      <div class="cover-item"><div class="cover-num">Phase 6</div><div class="cover-title">Summer</div><div class="cover-desc">Proving yourself, documenting deliverables, applying in parallel, and getting midpoint feedback</div></div>
+      <div class="cover-item"><div class="cover-num">Phase 7</div><div class="cover-title">Third Semester</div><div class="cover-desc">Leadership, full-time applications, H-1B filtering, interviewing, and locking in an offer</div></div>
+      <div class="cover-item"><div class="cover-num">Phase 8</div><div class="cover-title">Final Semester</div><div class="cover-desc">OPT filing, H-1B conversation, offer negotiation, commencement speaker, and passing it forward</div></div>
+    </div>
+
+    <div class="section-label">Who this is for</div>
+    <div class="for-grid">
+      <div class="for-card yes">
+        <div class="for-card-label">This is for you if...</div>
+        <div class="for-item"><span class="tick">+</span>You are an international student planning to study in the US</div>
+        <div class="for-item"><span class="tick">+</span>You want to work in the US after graduation</div>
+        <div class="for-item"><span class="tick">+</span>You are navigating CPT, OPT, or H-1B for the first time</div>
+        <div class="for-item"><span class="tick">+</span>You have no US network and are building one from scratch</div>
+        <div class="for-item"><span class="tick">+</span>You want a step-by-step guide from someone who did it</div>
+      </div>
+      <div class="for-card no">
+        <div class="for-card-label">This is not for you if...</div>
+        <div class="for-item"><span class="cross">-</span>You are a domestic student (some parts may still help)</div>
+        <div class="for-item"><span class="cross">-</span>You are looking for immigration legal advice</div>
+        <div class="for-item"><span class="cross">-</span>You are on a J-1 or other non-F-1 visa (some overlap, but this is built for F-1)</div>
+        <div class="for-item"><span class="cross">-</span>You have already completed your degree and are fully employed</div>
+      </div>
+    </div>
+
+    <div class="built-by">
+      <div class="built-by-label">Built by</div>
+      <div class="built-by-text">An international student from India who applied from abroad, arrived with no US network, landed internships on CPT, converted to a full-time role on OPT, and is now navigating H-1B sponsorship. No institution funded this. No consulting firm built it. It exists because no single resource like it existed when it was needed most.</div>
+    </div>
+
+    <button class="landing-cta-bottom" onclick="goTo('page-path')">Get Started</button>
+  </div>
+</div>
+
+<!-- PAGE 2: CHOOSE YOUR PATH -->
+<div class="page" id="page-path">
+  <div class="nav">
+    <div class="nav-logo">Re<span>root</span></div>
+    <div class="nav-steps">
+      <div class="nav-step done">01 Home</div>
+      <div class="nav-step active">02 Your Path</div>
+      <div class="nav-step">03 Setup</div>
+      <div class="nav-step">04 Roadmap</div>
+    </div>
+  </div>
+
+  <div class="path-wrap">
+    <div class="page-title">Build your path</div>
+    <div class="page-sub">Your roadmap is always included. Choose which optional modules you want added to it. You can turn them on or off at any time.</div>
+
+    <div class="module-grid">
+      <div class="module-card mandatory">
+        <div class="module-toggle">&#10003;</div>
+        <div style="flex:1">
+          <span class="module-badge badge-required">Required</span>
+          <div class="module-name">Your Roadmap</div>
+          <div class="module-desc">8 phases from application to full-time offer. Step-by-step, checkable, anchored to real timelines. This is always included.</div>
+          <div class="module-time">Covers 20+ months of your journey</div>
+        </div>
+      </div>
+
+      <div class="module-card" id="mod-quiz" onclick="toggleModule('quiz')">
+        <div class="module-toggle" id="toggle-quiz"></div>
+        <div style="flex:1">
+          <span class="module-badge badge-optional">Optional</span>
+          <div class="module-name">Values and University Profile</div>
+          <div class="module-desc">Rate 18 statements about what matters to you. Get a personalized university profile and a ranked list of factors to weigh when comparing programs.</div>
+          <div class="module-time">Takes about 2 minutes</div>
+        </div>
+      </div>
+
+      <div class="module-card" id="mod-rater" onclick="toggleModule('rater')">
+        <div class="module-toggle" id="toggle-rater"></div>
+        <div style="flex:1">
+          <span class="module-badge badge-optional">Optional</span>
+          <div class="module-name">University Comparison Tool</div>
+          <div class="module-desc">Add up to 5 universities and rate them across 12 weighted factors. Get a score and a recommendation for each one. Updates as you learn more from research and conversations.</div>
+          <div class="module-time">Use it during research, after talking to people, and when offers arrive</div>
+        </div>
+      </div>
+
+      <div class="module-card" id="mod-resources" onclick="toggleModule('resources')">
+        <div class="module-toggle" id="toggle-resources"></div>
+        <div style="flex:1">
+          <span class="module-badge badge-optional">Optional</span>
+          <div class="module-name">Resource Directory</div>
+          <div class="module-desc">Curated links to the best tools for every stage: program research, scholarships, H-1B employer lookup, salary data, and community forums.</div>
+          <div class="module-time">Referenced throughout your roadmap</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-full" onclick="goTo('page-setup')">Continue to Setup</button>
+  </div>
+</div>
+
+<!-- PAGE 3: SETUP -->
+<div class="page" id="page-setup">
+  <div class="nav">
+    <div class="nav-logo">Re<span>root</span></div>
+    <div class="nav-steps">
+      <div class="nav-step done">01 Home</div>
+      <div class="nav-step done">02 Your Path</div>
+      <div class="nav-step active">03 Setup</div>
+      <div class="nav-step">04 Roadmap</div>
+    </div>
+  </div>
+
+  <div class="setup-wrap">
+    <div class="page-title">Tell us about yourself</div>
+    <div class="page-sub">This is the only required step. Your answers personalize your roadmap and set the right context for the AI.</div>
+
+    <div class="card">
+      <div class="setup-grid" style="margin-bottom:14px">
+        <div><label>Your Name</label><input type="text" id="studentName" placeholder="e.g. Priya Sharma"></div>
+        <div><label>Home Country</label><input type="text" id="homeCountry" placeholder="e.g. India"></div>
+      </div>
+      <div class="setup-grid" style="margin-bottom:14px">
+        <div><label>Program / Field of Study</label><input type="text" id="fieldOfStudy" placeholder="e.g. MS in I/O Psychology"></div>
+        <div>
+          <label>Where are you right now?</label>
+          <select id="currentStage">
+            <option value="0">Researching, have not applied yet</option>
+            <option value="1">Applied, waiting for admission</option>
+            <option value="2">Admitted, preparing to arrive</option>
+            <option value="3">First semester</option>
+            <option value="4">Second semester</option>
+            <option value="5">Summer internship</option>
+            <option value="6">Third semester</option>
+            <option value="7">Final semester / OPT</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-bottom:20px"><label>Your end goal</label><input type="text" id="endGoal" placeholder="e.g. Full-time role in People Analytics at an H-1B sponsor"></div>
+
+      <!-- QUIZ MODULE (shown if selected) -->
+      <div id="quizModule" style="display:none">
+        <div style="border-top:2px solid var(--border);padding-top:20px;margin-bottom:16px">
+          <div style="font-size:15px;font-weight:700;margin-bottom:4px">Values and University Profile</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:16px">Rate each statement 1 (strongly disagree) to 5 (strongly agree).</div>
+          <div class="likert-labels" style="margin-left:calc(100% - 200px);width:200px"><span>Disagree</span><span>Agree</span></div>
+          <div class="likert-section">
+            <div class="likert-section-title">Values and Priorities</div>
+            <div class="likert-row" data-key="community"><div class="likert-statement">Being part of a strong community matters more to me than attending a prestigious school</div><div class="likert-scale"></div></div>
+            <div class="likert-row" data-key="debtfree"><div class="likert-statement">I would rather graduate debt-free from a lesser-known program than take on loans for a top school</div><div class="likert-scale"></div></div>
+            <div class="likert-row" data-key="roi"><div class="likert-statement">The financial return on my degree, salary and job placement, is my top consideration</div><div class="likert-scale"></div></div>
+            <div class="likert-row" data-key="prestige"><div class="likert-statement">The brand name and reputation of my university matters significantly to me</div><div class="likert-scale"></div></div>
+            <div class="likert-row" data-key="careergoal"><div class="likert-statement">My primary reason for coming to the US is to build a career here, not just to study</div><div class="likert-scale"></div></div>
+            <div class="likert-row" data-key="flexible"><div class="likert-statement">I am open to adjusting my field of study if a stronger opportunity exists in a related area</div><div class="likert-scale"></div></div>
+          </div>
+          <div class="likert-section">
+            <div class="likert-section-title">Financial Situation</div>
+            <div class="likert-row" data-key="needaid"><div class="likert-statement">I need significant financial aid or scholarships to make studying in the US possible</div><div class="likert-scale"></div></div>
+            <div class="likert-row" data-key="oncampusjob"><div class="likert-statement">Getting an on-campus job to help cover living expenses is important to my plan</div><div class="likert-scale"></div></div>
+            <div class="likert-row" data-key="budgetlocation"><div class="likert-statement">I need to consider cost of living when choosing where to study, not just tuition</div><div class="likert-scale"></div></div>
+          </div>
+          <div class="likert-section">
+            <div class="likert-section-title">Career and Networking</div>
+            <div class="likert-row" data-key="networking"><div class="likert-statement">I am comfortable reaching out to strangers on LinkedIn for coffee chats and referrals</div><div class="likert-scale"></div></div>
+            <div class="likert-row" data-key="careerservices"><div class="likert-statement">Strong Career Services support for international students is a deciding factor for me</div><div class="likert-scale"></div></div>
+            <div class="likert-row" data-key="alumninetwork"><div class="likert-statement">I want to attend a school with a strong alumni network in my target industry</div><div class="likert-scale"></div></div>
+            <div class="likert-row" data-key="location"><div class="likert-statement">Being near major cities or employers in my field matters when choosing a university</div><div class="likert-scale"></div></div>
+            <div class="likert-row" data-key="cpt"><div class="likert-statement">Getting an internship during my studies (CPT) is a critical part of my plan</div><div class="likert-scale"></div></div>
+            <div class="likert-row" data-key="h1b"><div class="likert-statement">Finding a job in the US after graduation and securing H-1B sponsorship is my primary goal</div><div class="likert-scale"></div></div>
+          </div>
+          <div class="likert-section">
+            <div class="likert-section-title">Academic Experience</div>
+            <div class="likert-row" data-key="professors"><div class="likert-statement">Having access to professors for mentorship and research opportunities matters to me</div><div class="likert-scale"></div></div>
+            <div class="likert-row" data-key="classsize"><div class="likert-statement">I prefer smaller class sizes where I can build real relationships with classmates and faculty</div><div class="likert-scale"></div></div>
+            <div class="likert-row" data-key="diversity"><div class="likert-statement">A diverse and internationally inclusive campus environment is important to me</div><div class="likert-scale"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-full" onclick="buildRoadmap()">Build My Roadmap</button>
+      <div style="text-align:center;margin-top:10px"><button style="background:none;border:none;font-size:12px;color:var(--text-muted);cursor:pointer;font-family:Arial;text-decoration:underline" onclick="goTo('page-path')">Go back</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4: ROADMAP -->
+<div class="page" id="page-roadmap">
+  <div class="nav">
+    <div class="nav-logo">Re<span>root</span></div>
+    <div class="nav-steps">
+      <div class="nav-step done">01 Home</div>
+      <div class="nav-step done">02 Your Path</div>
+      <div class="nav-step done">03 Setup</div>
+      <div class="nav-step active">04 Roadmap</div>
+    </div>
+  </div>
+
+  <div class="roadmap-wrap">
+    <div class="student-bar" id="studentBar"></div>
+    <div class="progress-wrap">
+      <div class="progress-top"><span>Overall Progress</span><strong id="progressText">0 steps complete</strong></div>
+      <div class="bar-bg"><div class="bar-fg" id="progressBar" style="width:0%"></div></div>
+    </div>
+    <div id="phasesContainer"></div>
+  </div>
+</div>
+
+<!-- CHATBOT -->
+<div class="chat-section">
+  <div class="chat-window" id="chatWindow">
+    <div class="chat-header">
+      <div class="chat-avatar">RR</div>
+      <div>
+        <div class="chat-header-name">Reroot AI</div>
+        <div class="chat-header-status">Online, ask me anything</div>
+      </div>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="msg bot"><div class="msg-name">Reroot AI</div><div class="msg-bubble">Hi. Ask me anything about your journey, visa timelines, internship hunting, coffee chat scripts, H-1B sponsors, offer negotiation. I have been through it.</div></div>
+    </div>
+    <div class="quick-prompts">
+      <button class="quick-prompt" onclick="sendQuick('What is CPT vs OPT?')">CPT vs OPT</button>
+      <button class="quick-prompt" onclick="sendQuick('How do I find H-1B sponsor companies?')">H-1B sponsors</button>
+      <button class="quick-prompt" onclick="sendQuick('Write me a LinkedIn coffee chat message')">Coffee chat</button>
+      <button class="quick-prompt" onclick="sendQuick('What should I do in my first week on campus?')">First week</button>
+    </div>
+    <div class="chat-input-row">
+      <input class="chat-input" id="chatInput" placeholder="Ask anything..." onkeydown="if(event.key==='Enter')sendMessage()">
+      <button class="chat-send" id="sendBtn" onclick="sendMessage()">&#10148;</button>
+    </div>
+  </div>
+  <button class="chat-toggle" onclick="toggleChat()" id="chatToggle">Ask AI</button>
+</div>
+
+<script>
+// STATE
+let selectedModules = { quiz: false, rater: false, resources: false };
+let likertScores = {};
+let completedSteps = new Set();
+let totalSteps = 0;
+let studentContext = {};
+let universities = [];
+
+// NAVIGATION
+function goTo(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// MODULE TOGGLES
+function toggleModule(key) {
+  selectedModules[key] = !selectedModules[key];
+  const card = document.getElementById('mod-' + key);
+  const toggle = document.getElementById('toggle-' + key);
+  if (selectedModules[key]) {
+    card.classList.add('selected');
+    toggle.innerHTML = '&#10003;';
+  } else {
+    card.classList.remove('selected');
+    toggle.innerHTML = '';
+  }
+  // Show/hide quiz on setup page
+  if (key === 'quiz') {
+    document.getElementById('quizModule').style.display = selectedModules.quiz ? 'block' : 'none';
+  }
+}
+
+// LIKERT BUTTONS
+document.querySelectorAll('.likert-row').forEach(row => {
+  const key = row.dataset.key;
+  const scale = row.querySelector('.likert-scale');
+  [1,2,3,4,5].forEach(val => {
+    const btn = document.createElement('button');
+    btn.className = 'likert-btn';
+    btn.textContent = val;
+    btn.onclick = () => {
+      scale.querySelectorAll('.likert-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      likertScores[key] = val;
+    };
+    scale.appendChild(btn);
+  });
+});
+
+// DERIVE PROFILE FROM LIKERT
+function deriveProfile() {
+  const get = k => likertScores[k] || 3;
+  const careerScore = (get('careergoal') + get('h1b') + get('cpt')) / 3;
+  const financeScore = (get('debtfree') + get('needaid') + get('oncampusjob')) / 3;
+  const communityScore = (get('community') + get('diversity') + get('classsize')) / 3;
+  const prestigeScore = (get('prestige') + get('roi')) / 2;
+  const networkingScore = (get('networking') + get('alumninetwork') + get('careerservices')) / 3;
+  const top = Math.max(careerScore, financeScore, communityScore, prestigeScore);
+  if (top === careerScore && networkingScore >= 3.5) return "The Strategic Career Builder";
+  if (top === financeScore) return "The Calculated Mover";
+  if (top === communityScore) return "The Community Seeker";
+  if (top === prestigeScore) return "The Academic Achiever";
+  return "The Purposeful Navigator";
+}
+
+function deriveTopFactors() {
+  const get = k => likertScores[k] || 3;
+  return [
+    { label: 'Scholarship and financial aid', score: get('debtfree') + get('needaid') },
+    { label: 'Career Services for international students', score: get('careerservices') * 2 },
+    { label: 'CPT eligibility timeline', score: get('cpt') * 2 },
+    { label: 'Alumni network in your target industry', score: get('alumninetwork') * 2 },
+    { label: 'Location near target employers', score: get('location') * 2 },
+    { label: 'On-campus job availability', score: get('oncampusjob') * 2 },
+    { label: 'Program reputation and brand name', score: get('prestige') * 2 },
+    { label: 'Professor accessibility and mentorship', score: get('professors') * 2 },
+    { label: 'Small class size and community feel', score: get('classsize') * 2 },
+    { label: 'International student diversity', score: get('diversity') * 2 },
+    { label: 'H-1B sponsorship track record via alumni', score: get('h1b') * 2 },
+    { label: 'Affordable cost of living', score: get('budgetlocation') * 2 },
+  ].sort((a,b) => b.score - a.score).slice(0,6);
+}
+
+// UNIVERSITY RATER
+const factors = [
+  { id: 'scholarship', label: 'Scholarship / Affordability', source: 'Research + financial aid letter', weight: 2 },
+  { id: 'careerservices', label: 'Career Services (international focus)', source: 'Ask alumni: how good is Career services for F-1 students?', weight: 2 },
+  { id: 'cpt', label: 'CPT eligibility timeline', source: 'Ask DSO or check program policy', weight: 2 },
+  { id: 'oncampus', label: 'On-campus job availability', source: 'Ask current students how easy it was', weight: 1.5 },
+  { id: 'alumni', label: 'Alumni network in your field', source: 'Search LinkedIn for alumni at your target employers', weight: 2 },
+  { id: 'location', label: 'Location near target employers', source: 'Research industry density in that city', weight: 1.5 },
+  { id: 'reputation', label: 'Program reputation in your industry', source: 'Look at where graduates work; talk to recruiters', weight: 1.5 },
+  { id: 'classsize', label: 'Class size and community feel', source: 'Visit or ask current students', weight: 1 },
+  { id: 'professors', label: 'Professor accessibility', source: 'Email a professor before applying. See if they respond.', weight: 1 },
+  { id: 'housing', label: 'Housing cost and availability', source: 'Research average rent near campus', weight: 1 },
+  { id: 'internship', label: 'Internship placement rate', source: 'Ask Career Services: what % of students get internships?', weight: 2 },
+  { id: 'diversity', label: 'International student support', source: 'Talk to the international student office', weight: 1 },
+];
+
+function renderUniRater(container, mode) {
+  const notes = { research: "Rate based on what you find online. It is okay to estimate, you will update as you learn more.", peopleTalk: "Update after talking to alumni or current students. Their answers should shift your scores.", offers: "You have offers. Rate each school on everything you know now." };
+  container.innerHTML = `
+    <div class="uni-phase-toggle">
+      <button class="phase-toggle-btn ${mode==="research"?"active":""}" onclick="switchMode(this,'research')">Phase 1: Research</button>
+      <button class="phase-toggle-btn ${mode==="peopleTalk"?"active":""}" onclick="switchMode(this,'peopleTalk')">Phase 2: After Talking to People</button>
+      <button class="phase-toggle-btn ${mode==="offers"?"active":""}" onclick="switchMode(this,'offers')">Phase 3: You Have Offers</button>
+    </div>
+    <div class="phase-note">${notes[mode]}</div>
+    <div class="uni-rater-header"><div style="font-size:14px;font-weight:700">University Comparison</div><button class="add-uni-btn" onclick="addUni(this.closest('.uni-rater'))">+ Add University</button></div>
+    <div id="uniCards-${mode}">${universities.map((u,i) => buildUniCard(u,i,mode)).join("")}</div>`;
+  if (universities.length === 0) addUni(container);
+}
+
+function buildUniCard(u, idx, mode) {
+  const tw = factors.reduce((s,f) => s+f.weight, 0);
+  const score = factors.reduce((s,f) => { const v=(u.ratings&&u.ratings[mode]&&u.ratings[mode][f.id])||5; return s+(v/10)*f.weight; }, 0);
+  const pct = Math.round((score/tw)*100);
+  const bc = pct>=70?"high":pct>=45?"mid":"low";
+  const rec = pct>=70 ? "Strong fit. If you have an offer, seriously consider accepting." : pct>=45 ? "Decent fit. Try to negotiate a better scholarship before deciding." : "Weak fit based on your priorities. Consider whether this is worth your time.";
+  const rc = pct>=70?"rec-apply":pct>=45?"rec-negotiate":"rec-pass";
+  return `<div class="uni-card" id="uc-${idx}-${mode}">
+    <div class="uni-card-header">
+      <input class="uni-name-input" placeholder="University name..." value="${u.name||""}" oninput="universities[${idx}].name=this.value">
+      <div class="uni-score-badge ${bc}" id="badge-${idx}-${mode}">${pct}%</div>
+      <button class="remove-uni" onclick="removeUni(${idx})">Remove</button>
+    </div>
+    <div class="factors-grid">${factors.map(f => { const val=(u.ratings&&u.ratings[mode]&&u.ratings[mode][f.id])||5; return `<div class="factor-row"><div class="factor-label">${f.label}<span id="lbl-${idx}-${mode}-${f.id}">${val}/10</span></div><div class="factor-source">${f.source}</div><input type="range" class="factor-slider" min="1" max="10" value="${val}" oninput="updateRating(${idx},'${mode}','${f.id}',this.value)"></div>`; }).join("")}</div>
+    <div class="uni-notes"><label>Notes from research or conversations</label><textarea placeholder="e.g. Alumni said Career Services rarely helps F-1 students..." oninput="universities[${idx}].notes=this.value">${u.notes||""}</textarea></div>
+    <div class="uni-recommendation ${rc}" id="rec-${idx}-${mode}">${rec}</div>
+  </div>`;
+}
+
+function addUni(container) { universities.push({name:"",ratings:{},notes:""}); refreshRaters(); }
+function removeUni(idx) { universities.splice(idx,1); refreshRaters(); }
+function switchMode(btn, mode) { renderUniRater(btn.closest(".uni-rater"), mode); }
+function refreshRaters() {
+  document.querySelectorAll(".uni-rater").forEach(r => {
+    const ab = r.querySelector(".phase-toggle-btn.active");
+    const mode = ab ? (ab.textContent.includes("Research")?"research":ab.textContent.includes("People")?"peopleTalk":"offers") : "research";
+    renderUniRater(r, mode);
+  });
+}
+function updateRating(idx, mode, fid, val) {
+  if (!universities[idx].ratings) universities[idx].ratings={};
+  if (!universities[idx].ratings[mode]) universities[idx].ratings[mode]={};
+  universities[idx].ratings[mode][fid]=parseInt(val);
+  const lbl=document.getElementById(`lbl-${idx}-${mode}-${fid}`);
+  if(lbl) lbl.textContent=val+"/10";
+  const tw=factors.reduce((s,f)=>s+f.weight,0);
+  const score=factors.reduce((s,f)=>{const v=(universities[idx].ratings[mode]&&universities[idx].ratings[mode][f.id])||5;return s+(v/10)*f.weight;},0);
+  const pct=Math.round((score/tw)*100);
+  const badge=document.getElementById(`badge-${idx}-${mode}`);
+  if(badge){badge.textContent=pct+"%";badge.className="uni-score-badge "+(pct>=70?"high":pct>=45?"mid":"low");}
+  const rec=document.getElementById(`rec-${idx}-${mode}`);
+  if(rec){
+    if(pct>=70){rec.className="uni-recommendation rec-apply";rec.textContent="Strong fit. If you have an offer, seriously consider accepting.";}
+    else if(pct>=45){rec.className="uni-recommendation rec-negotiate";rec.textContent="Decent fit. Try to negotiate a better scholarship before deciding.";}
+    else{rec.className="uni-recommendation rec-pass";rec.textContent="Weak fit based on your priorities. Consider whether this is worth your time.";}
+  }
+}
+
+// PHASES DATA
+const phases = [
+  { name:"Getting In", anchor:"Starting 20 months before your target arrival", num:1, type:"timeline", steps:[
+    {month:"Month -20 to -18, Fund First",title:"Research scholarship categories before anything else",desc:"Merit-based, need-based, country-specific, departmental assistantships, and tuition waivers. Know what is available before you shortlist schools. This determines what is actually affordable.",tag:"urgent"},
+    {month:"Month -18, Shortlist",title:"Build your list of 8 to 12 programs",desc:"Balance reach, match, and safety. Look at career outcomes and where alumni work, not just rankings. Check CPT eligibility timelines and whether the program has a track record of F-1 student employment.",tag:""},
+    {month:"Month -16, Test Prep",title:"GRE / GMAT / IELTS / TOEFL",desc:"Know which tests your target programs require. Many STEM programs waive GRE now, check each school individually. Give yourself at least 3 months to prepare.",tag:""},
+    {month:"Month -14, Writing",title:"Write your Statement of Purpose",desc:"Your SOP is your story. Be specific, name professors you want to work with, research you are interested in, and the career outcome you are targeting. Generic SOPs do not stand out.",tag:""},
+    {month:"Month -12, Recommendations",title:"Request Letters of Recommendation",desc:"Ask recommenders at least 3 months before deadlines. Give them your SOP draft, resume, and bullet points on what you want them to highlight. Make it easy for them.",tag:"urgent"},
+    {month:"After Offers Arrive, Compare",title:"Rate and prioritize your offers",desc:"Do not choose by gut feeling. Use the University Comparison tool to score each offer on the factors that matter most to you.",tag:"career"},
+    {month:"After Offers Arrive, Negotiate",title:"Negotiate scholarships before committing",desc:"If you have a competing offer with a better scholarship, email the admissions office. Schools negotiate more than you think. Be polite, direct, and show them the competing offer.",tag:"urgent"},
+  ]},
+  { name:"Visa and Pre-Arrival", anchor:"3 to 6 months before you land", num:2, type:"grid", steps:[
+    {title:"Receive and review your I-20",desc:"Your I-20 is your most important document. Verify your program end date and enrollment level. Keep physical and digital copies in multiple places.",tag:"visa"},
+    {title:"Pay SEVIS fee (I-901), $350",desc:"Pay before your visa interview. Keep the receipt, you need it on the day. This is separate from your visa application fee.",tag:"visa"},
+    {title:"Book your F-1 visa interview early",desc:"Embassy wait times can stretch weeks to months. Book as soon as you have your I-20. Prepare to demonstrate ties to your home country.",tag:"visa"},
+    {title:"Secure housing before arrival",desc:"On-campus housing fills within days of decisions. Contact the international student office immediately. If going off-campus, research neighborhoods and average rent.",tag:"urgent"},
+    {title:"Plan your US bank account",desc:"Chase, Bank of America, and some credit unions allow you to start the process before arrival. Bring your I-20, passport, and visa stamp when you go in.",tag:""},
+    {title:"Research health insurance requirements",desc:"Most universities require international students to enroll in the school health plan. Know the cost and what it covers before you arrive.",tag:"visa"},
+  ]},
+  { name:"First Semester, Build Your Foundation", anchor:"Months 1 to 5 on campus", num:3, type:"grid", steps:[
+    {title:"Attend every International Student Orientation session",desc:"This is where you learn your CPT/OPT rules, understand your visa conditions, and meet the DSO who will sign off on your work authorizations. Do not skip any of it.",tag:"urgent"},
+    {title:"Visit Career Services in your first week",desc:"Introduce yourself. Tell them your background and your goal. Ask them to review your resume and put you on their mailing list for internship postings and employer events.",tag:"career"},
+    {title:"Update your resume to US standards immediately",desc:"No photo. No date of birth. No marital status. Action verbs, quantified results. Have Career Services review it before it goes anywhere.",tag:"career"},
+    {title:"Join 2 to 3 clubs with intention",desc:"One professional club in your field. One cultural or community organization. One leadership opportunity. Choose quality over quantity, commit and show up.",tag:"career"},
+    {title:"Introduce yourself to professors in office hours",desc:"Go in the first two weeks. Mention what drew you to their course. This opens RA, TA, and research doors and builds references for internship applications.",tag:""},
+    {title:"Activate your LinkedIn on day one",desc:"Add your university, program, and expected graduation date. Start connecting with program alumni in your target industry. Your profile is your first impression to US recruiters.",tag:"career"},
+    {title:"Start coffee chats in Semester 1, not Semester 2",desc:"Reach out to 2 to 3 people per week on LinkedIn. Alumni first. Not to ask for jobs, to learn the industry, understand what skills matter, and get warm for internship season.",tag:"career"},
+    {title:"Understand your CPT eligibility timeline",desc:"Most programs require one full academic year before CPT. Ask your DSO in week one so you plan your internship search around the correct window.",tag:"visa"},
+    {title:"Get a Social Security Number if eligible",desc:"If you have an on-campus job offer, you can apply for an SSN. This opens financial products and simplifies background checks later.",tag:"visa"},
+  ]},
+  { name:"Second Semester, Convert to Internship", anchor:"Months 5 to 10 on campus", num:4, type:"grid", steps:[
+    {title:"Follow up with Semester 1 connections for referrals",desc:"The people you had coffee chats with are now warm contacts. Follow up with context, share what you have been working on and ask specifically if there are any internship openings at their company.",tag:"career"},
+    {title:"Apply to summer internships starting in January",desc:"Summer recruiting opens in January for many industries. Use Handshake, LinkedIn, your university job board, and direct company career pages. Filter for CPT eligibility.",tag:"urgent"},
+    {title:"Tailor every single application",desc:"Mirror the language of the job description. Quantify your experience. One generic resume will not work. Each version should reflect that specific role.",tag:"career"},
+    {title:"Practice behavioral interviews out loud",desc:"Use STAR method. Record yourself on your phone and watch it back. Practice with Career Services. The goal is clarity and confidence, not a perfect accent.",tag:"career"},
+    {title:"File CPT authorization before accepting any offer",desc:"CPT must be authorized by your DSO before your start date. This process takes time. Start paperwork the moment you have an offer letter, not after you accept.",tag:"visa"},
+    {title:"Keep sending coffee chat requests every week",desc:"Even when an application is pending, keep networking. The internship you do not get this cycle may come through a connection you make right now.",tag:"career"},
+    {title:"Track every application in a spreadsheet",desc:"Company, role, date applied, status, contact person, follow-up date. Recruiting is a numbers game and you need to manage it like one.",tag:""},
+  ]},
+  { name:"Summer, Prove Yourself and Keep Applying", anchor:"Summer between Year 1 and Year 2", num:5, type:"grid", steps:[
+    {title:"Go above and beyond from week one",desc:"Treat this like a 10-week interview. Arrive early, ask smart questions, and volunteer for stretch projects. Your manager's impression is forming in real time and it affects whether you get a return offer.",tag:"career"},
+    {title:"Document every deliverable as you complete it",desc:"Save outputs, screenshots, feedback, and project summaries. You will use these for your resume, LinkedIn, and future interviews. Do not wait until your last week.",tag:"urgent"},
+    {title:"Apply to fall and spring internships in parallel",desc:"Not every internship converts to a return offer. Apply for fall or part-time opportunities now while you have recent project experience and momentum.",tag:"urgent"},
+    {title:"Keep networking inside and outside the company",desc:"Schedule informal chats with people in other teams. Attend any company events. Your next opportunity may come from someone you meet at the intern mixer.",tag:"career"},
+    {title:"Ask for feedback at the midpoint, not the end",desc:"At week 5, ask your manager: is there anything I should be doing differently? This signals maturity and gives you time to adjust before the final evaluation.",tag:"career"},
+    {title:"Update your LinkedIn with your internship experience",desc:"Add the company, role, and 2 to 3 bullet points on what you are doing. Recruiters look at LinkedIn constantly, an active profile with real experience gets attention.",tag:"career"},
+  ]},
+  { name:"Third Semester, Focus and Execute", anchor:"Months 11 to 16 on campus", num:6, type:"grid", steps:[
+    {title:"Take on a leadership role in at least one club",desc:"Board positions, project leads, event organizers. Employers want to see you initiated something, not just attended. Document what you built or improved.",tag:"career"},
+    {title:"Apply to full-time roles and internships simultaneously",desc:"Full-time offers for new grads often come out months before graduation. Do not wait until your last semester. Apply now while you have energy and time to prepare.",tag:"urgent"},
+    {title:"Filter every application by H-1B sponsorship history",desc:"Use MyVisaJobs.com or H1BGrader.com before applying anywhere. Focus on employers with a track record of H-1B approvals in your field. This is your primary filter, not an afterthought.",tag:"visa"},
+    {title:"Interview actively, treat every one as practice",desc:"Even if a role is not your first choice, go through the interview. You get better by doing it. Write a debrief note after each interview, what went well, what to improve.",tag:"career"},
+    {title:"Aim to have an offer before Semester 4 begins",desc:"The goal of Semester 3 is to walk into your final semester with an offer already in hand. This removes the pressure and gives you time to negotiate properly.",tag:"urgent"},
+    {title:"Build your LinkedIn presence as a subject matter voice",desc:"Post once a week about something you learned in your field. Share an insight from class or your internship. Recruiters and hiring managers notice candidates who have a point of view.",tag:"career"},
+  ]},
+  { name:"Final Semester, Cross the Finish Line", anchor:"Months 17 to 20 and beyond", num:7, type:"grid", steps:[
+    {title:"Apply for OPT 90 days before your graduation date",desc:"File through your DSO no later than 90 days before graduation. Processing takes 3 to 5 months. Missing this window creates a gap in your work authorization. Do not wait.",tag:"urgent"},
+    {title:"Start the H-1B conversation with your employer in January",desc:"H-1B is filed in April by your employer. They need months to prepare the petition. If you are starting after a May graduation, bring this up in January. Not March.",tag:"visa"},
+    {title:"Negotiate your offer, yes, even on OPT",desc:"Know your market rate. Use Levels.fyi, Glassdoor, and LinkedIn Salary. Total compensation includes base, bonus, equity, and benefits. Negotiate on all of it, not just base salary.",tag:"career"},
+    {title:"Apply to be commencement speaker",desc:"Applications typically open in your final semester. Your immigrant story, academic record, and campus involvement make a compelling case. Write the application like a cover letter, specific and outcome-focused.",tag:""},
+    {title:"Write your journey down and share it",desc:"Post on LinkedIn about what you learned. Tag your university, your program, professors who helped you. This creates your personal brand and becomes someone else's blueprint.",tag:"career"},
+    {title:"Pass it forward",desc:"Reach out to the next cohort of international students at your school. Offer to do a coffee chat. You now know everything they do not, and that is worth sharing.",tag:""},
+  ]},
+];
+
+function buildRoadmap() {
+  const name = document.getElementById("studentName").value.trim() || "You";
+  const country = document.getElementById("homeCountry").value.trim() || "abroad";
+  const field = document.getElementById("fieldOfStudy").value.trim() || "your program";
+  const stage = parseInt(document.getElementById("currentStage").value);
+  const goal = document.getElementById("endGoal").value.trim() || "a full-time role in the US";
+  let profile = "International Student";
+  if (selectedModules.quiz) profile = deriveProfile();
+  studentContext = { name, country, field, stage, goal, profile };
+
+  document.getElementById("studentBar").innerHTML = `
+    <div class="sname">${name}</div>
+    <span class="stag">${field}</span>
+    <span class="stag">From ${country}</span>
+    <span class="stag">${profile}</span>
+    <div class="sgoal">Goal: ${goal}</div>`;
+
+  const container = document.getElementById("phasesContainer");
+  container.innerHTML = "";
+  totalSteps = 0;
+  completedSteps = new Set();
+
+  if (selectedModules.quiz) {
+    const topFactors = deriveTopFactors();
+    const profileDesc = {
+      "The Strategic Career Builder": "You are coming to the US to work. The degree is a means to an end. Front-load networking, target CPT-eligible programs early, and filter every university by how well it places international students in your target industry.",
+      "The Calculated Mover": "You think like an investor. You will not overpay if a scholarship exists. Prioritize financial aid generosity, on-campus job availability, and cost of living over brand name.",
+      "The Community Seeker": "Belonging matters as much as outcomes. Look for active international student organizations, smaller class sizes, and cities with a diaspora community from your home country.",
+      "The Academic Achiever": "Brand and rigor matter to you. Focus on program reputation in your specific field, not general rankings. A strong academic name opens doors with selective employers.",
+      "The Purposeful Navigator": "You have a balanced set of priorities. Use the university comparison tool to weigh all factors carefully. Your flexibility is an advantage."
+    }[profile] || "";
+    const summaryEl = document.createElement("div");
+    summaryEl.className = "phase";
+    summaryEl.innerHTML = `<div class="phase-header"><div class="phase-num" style="background:var(--blue-dark);font-size:10px">YOU</div><div><div class="phase-name">Your University Profile</div><div class="phase-meta">Based on your values assessment</div></div></div>
+      <div style="background:var(--blue-pale);border:1.5px solid var(--blue-light);border-radius:6px;padding:18px 22px;margin-bottom:14px">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--blue);margin-bottom:4px">Your Profile</div>
+        <div style="font-size:17px;font-weight:700;color:var(--blue-dark);margin-bottom:6px">${profile}</div>
+        <div style="font-size:13px;color:var(--text-muted);line-height:1.6">${profileDesc}</div>
+      </div>
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--blue);margin-bottom:8px">Your Top Factors When Choosing a University</div>
+      ${topFactors.map((f,i) => `<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #eef4fb"><div style="width:20px;height:20px;border-radius:50%;background:var(--blue);color:var(--white);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">${i+1}</div><div style="font-size:13px;color:var(--text);font-weight:${i<3?"700":"400"}">${f.label}</div></div>`).join("")}`;
+    container.appendChild(summaryEl);
+  }
+
+  phases.forEach((phase, pi) => {
+    const isCurrent = pi === stage;
+    const isDone = pi < stage;
+    const phaseEl = document.createElement("div");
+    phaseEl.className = "phase";
+    totalSteps += phase.steps.length;
+    let stepsHtml = "";
+    if (phase.type === "timeline") {
+      stepsHtml = `<div class="timeline">`;
+      phase.steps.forEach((step, si) => {
+        const id = `${pi}-${si}`;
+        if (isDone) completedSteps.add(id);
+        stepsHtml += `<div class="timeline-item ${isDone?"done":""}" id="tli-${id}" onclick="toggleTimeline('${id}')"><div class="tl-month">${step.month}</div><div class="tl-card"><div class="tl-title">${step.title}<div class="tl-check">&#10003;</div></div><div class="tl-desc">${step.desc}</div>${step.tag?`<span class="tl-tag ${step.tag}">${step.tag}</span>`:""}</div></div>`;
+      });
+      stepsHtml += `</div>`;
+    } else {
+      stepsHtml = `<div class="steps-grid">`;
+      phase.steps.forEach((step, si) => {
+        const id = `${pi}-${si}`;
+        if (isDone) completedSteps.add(id);
+        stepsHtml += `<div class="step-card ${isDone?"done":""} ${isCurrent?"current-phase":""}" id="step-${id}" onclick="toggleStep('${id}')"><div class="step-check">&#10003;</div><div class="step-title">${step.title}</div><div class="step-desc">${step.desc}</div><span class="step-tag ${step.tag}">${step.tag||"action"}</span></div>`;
+      });
+      stepsHtml += `</div>`;
+    }
+    phaseEl.innerHTML = `<div class="phase-header"><div class="phase-num ${isCurrent?'current':''}">${phase.num}</div><div><div class="phase-name">${phase.name}${isCurrent?'<span class="phase-you-here">You are here</span>':''}</div><div class="phase-meta">${phase.anchor}</div></div></div>${stepsHtml}`;
+    container.appendChild(phaseEl);
+  });
+
+  if (selectedModules.rater) {
+    const raterEl = document.createElement("div");
+    raterEl.className = "phase";
+    raterEl.innerHTML = `<div class="phase-header"><div class="phase-num" style="font-size:10px">UNI</div><div><div class="phase-name">University Comparison Tool</div><div class="phase-meta">Rate, compare, and decide</div></div></div><div class="uni-rater"></div>`;
+    container.appendChild(raterEl);
+    renderUniRater(raterEl.querySelector(".uni-rater"), "research");
+  } else {
+    const pl = document.createElement("div");
+    pl.className = "optional-placeholder";
+    pl.innerHTML = `<div class="optional-placeholder-title">University Comparison Tool</div><div class="optional-placeholder-desc">Rate and compare programs on 12 weighted factors.</div><button class="optional-add-btn" onclick="selectedModules.rater=true;buildRoadmap()">Add this to my roadmap</button>`;
+    container.appendChild(pl);
+  }
+
+  if (selectedModules.resources) {
+    const resEl = document.createElement("div");
+    resEl.className = "phase";
+    resEl.innerHTML = `<div class="phase-header"><div class="phase-num" style="font-size:10px">RES</div><div><div class="phase-name">Resource Directory</div><div class="phase-meta">Tools to use at every stage</div></div></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px">
+        <div class="resource-card"><div class="resource-cat" style="color:var(--blue)">Program Research</div>
+          <a class="resource-link" href="https://thegradcafe.com" target="_blank"><div class="resource-name">The Grad Cafe</div><div class="resource-desc">Real acceptance data from past applicants at your target schools</div></a>
+          <a class="resource-link" href="https://www.usnews.com/best-graduate-schools" target="_blank"><div class="resource-name">US News Graduate Rankings</div><div class="resource-desc">Rankings by specific field, not just overall university rank</div></a>
+          <a class="resource-link" href="https://educationusa.state.gov" target="_blank"><div class="resource-name">EducationUSA</div><div class="resource-desc">Free US government advising centers in most countries</div></a>
+        </div>
+        <div class="resource-card"><div class="resource-cat" style="color:var(--green)">Scholarships</div>
+          <a class="resource-link" href="https://www.fastweb.com" target="_blank"><div class="resource-name">Fastweb</div><div class="resource-desc">Large scholarship database, filter by your background and field</div></a>
+          <a class="resource-link" href="https://www.internationalscholarships.com" target="_blank"><div class="resource-name">InternationalScholarships.com</div><div class="resource-desc">Scholarships specifically for international students</div></a>
+          <a class="resource-link" href="https://www.profellow.com" target="_blank"><div class="resource-name">ProFellow</div><div class="resource-desc">Fellowships and fully funded programs for graduate students</div></a>
+        </div>
+        <div class="resource-card"><div class="resource-cat" style="color:var(--red)">Visa and H-1B</div>
+          <a class="resource-link" href="https://www.myvisajobs.com" target="_blank"><div class="resource-name">MyVisaJobs</div><div class="resource-desc">Which employers in your field sponsor H-1B. Use before you shortlist schools.</div></a>
+          <a class="resource-link" href="https://h1bgrader.com" target="_blank"><div class="resource-name">H1BGrader</div><div class="resource-desc">Employer H-1B approval and denial history</div></a>
+          <a class="resource-link" href="https://www.uscis.gov/working-in-the-united-states/students-and-exchange-visitors" target="_blank"><div class="resource-name">USCIS Student Resources</div><div class="resource-desc">Official guidance on F-1, OPT, CPT, and work authorization</div></a>
+        </div>
+        <div class="resource-card"><div class="resource-cat" style="color:var(--orange)">Jobs and Salary</div>
+          <a class="resource-link" href="https://joinhandshake.com" target="_blank"><div class="resource-name">Handshake</div><div class="resource-desc">University-connected job board for on-campus and entry-level roles</div></a>
+          <a class="resource-link" href="https://levels.fyi" target="_blank"><div class="resource-name">Levels.fyi</div><div class="resource-desc">Real compensation data by company and role. Use when negotiating.</div></a>
+          <a class="resource-link" href="https://www.glassdoor.com" target="_blank"><div class="resource-name">Glassdoor</div><div class="resource-desc">Salary data, company reviews, and interview experience reports</div></a>
+        </div>
+        <div class="resource-card"><div class="resource-cat" style="color:var(--text-muted)">Community</div>
+          <a class="resource-link" href="https://www.teamblind.com" target="_blank"><div class="resource-name">Blind</div><div class="resource-desc">Anonymous forum. International students post about visa situations and sponsorship.</div></a>
+          <a class="resource-link" href="https://www.reddit.com/r/f1visa" target="_blank"><div class="resource-name">Reddit r/f1visa</div><div class="resource-desc">Real advice from people actively going through the F-1 process</div></a>
+          <a class="resource-link" href="https://www.reddit.com/r/gradadmissions" target="_blank"><div class="resource-name">Reddit r/gradadmissions</div><div class="resource-desc">Application results, SOP advice, and program discussions</div></a>
+        </div>
+      </div>`;
+    container.appendChild(resEl);
+  } else {
+    const pl = document.createElement("div");
+    pl.className = "optional-placeholder";
+    pl.innerHTML = `<div class="optional-placeholder-title">Resource Directory</div><div class="optional-placeholder-desc">Curated links to the best tools for every stage.</div><button class="optional-add-btn" onclick="selectedModules.resources=true;buildRoadmap()">Add this to my roadmap</button>`;
+    container.appendChild(pl);
+  }
+
+  updateProgress();
+  goTo("page-roadmap");
+}
+
+function toggleTimeline(id) {
+  const el = document.getElementById("tli-"+id);
+  if (completedSteps.has(id)) { completedSteps.delete(id); el.classList.remove("done"); }
+  else { completedSteps.add(id); el.classList.add("done"); }
+  updateProgress();
+}
+function toggleStep(id) {
+  const card = document.getElementById("step-"+id);
+  if (completedSteps.has(id)) { completedSteps.delete(id); card.classList.remove("done"); }
+  else { completedSteps.add(id); card.classList.add("done"); }
+  updateProgress();
+}
+function updateProgress() {
+  const done = completedSteps.size;
+  const pct = totalSteps > 0 ? Math.round((done/totalSteps)*100) : 0;
+  document.getElementById("progressText").textContent = `${done} of ${totalSteps} steps complete (${pct}%)`;
+  document.getElementById("progressBar").style.width = `${pct}%`;
+  saveState();
+}
+
+// PERSISTENCE
+function saveState() {
+  try {
+    const state = {
+      studentContext,
+      selectedModules,
+      likertScores,
+      completedSteps: Array.from(completedSteps),
+      universities,
+      currentPage: document.querySelector(".page.active")?.id || "page-landing"
+    };
+    localStorage.setItem("reroot_state", JSON.stringify(state));
+  } catch(e) {}
+}
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem("reroot_state");
+    if (!saved) return false;
+    const state = JSON.parse(saved);
+    if (!state.studentContext || !state.studentContext.name) return false;
+    studentContext = state.studentContext;
+    selectedModules = state.selectedModules || { quiz: false, rater: false, resources: false };
+    likertScores = state.likertScores || {};
+    universities = state.universities || [];
+    completedSteps = new Set(state.completedSteps || []);
+    // Rebuild modules toggles
+    ["quiz","rater","resources"].forEach(key => {
+      if (selectedModules[key]) {
+        const card = document.getElementById("mod-" + key);
+        const toggle = document.getElementById("toggle-" + key);
+        if (card) card.classList.add("selected");
+        if (toggle) toggle.innerHTML = "&#10003;";
+      }
+    });
+    // Rebuild likert buttons
+    document.querySelectorAll(".likert-row").forEach(row => {
+      const key = row.dataset.key;
+      if (likertScores[key]) {
+        const btns = row.querySelectorAll(".likert-btn");
+        btns.forEach(b => { if (parseInt(b.textContent) === likertScores[key]) b.classList.add("selected"); });
+      }
+    });
+    // Rebuild roadmap
+    buildRoadmapFromState();
+    goTo(state.currentPage || "page-roadmap");
+    return true;
+  } catch(e) { return false; }
+}
+
+function buildRoadmapFromState() {
+  document.getElementById("studentBar").innerHTML = `
+    <div class="sname">${studentContext.name}</div>
+    <span class="stag">${studentContext.field}</span>
+    <span class="stag">From ${studentContext.country}</span>
+    <span class="stag">${studentContext.profile}</span>
+    <div class="sgoal">Goal: ${studentContext.goal}</div>`;
+
+  const container = document.getElementById("phasesContainer");
+  container.innerHTML = "";
+  totalSteps = 0;
+  const savedCompleted = new Set(completedSteps);
+  completedSteps = new Set();
+
+  if (selectedModules.quiz) {
+    const topFactors = deriveTopFactors();
+    const profileDesc = {
+      "The Strategic Career Builder": "You are coming to the US to work. The degree is a means to an end. Front-load networking, target CPT-eligible programs early, and filter every university by how well it places international students in your target industry.",
+      "The Calculated Mover": "You think like an investor. You will not overpay if a scholarship exists. Prioritize financial aid generosity, on-campus job availability, and cost of living over brand name.",
+      "The Community Seeker": "Belonging matters as much as outcomes. Look for active international student organizations, smaller class sizes, and cities with a diaspora community from your home country.",
+      "The Academic Achiever": "Brand and rigor matter to you. Focus on program reputation in your specific field, not general rankings. A strong academic name opens doors with selective employers.",
+      "The Purposeful Navigator": "You have a balanced set of priorities. Use the university comparison tool to weigh all factors carefully. Your flexibility is an advantage."
+    }[studentContext.profile] || "";
+    const summaryEl = document.createElement("div");
+    summaryEl.className = "phase";
+    summaryEl.innerHTML = `<div class="phase-header"><div class="phase-num" style="background:var(--blue-dark);font-size:10px">YOU</div><div><div class="phase-name">Your University Profile</div><div class="phase-meta">Based on your values assessment</div></div></div>
+      <div style="background:var(--blue-pale);border:1.5px solid var(--blue-light);border-radius:6px;padding:18px 22px;margin-bottom:14px">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--blue);margin-bottom:4px">Your Profile</div>
+        <div style="font-size:17px;font-weight:700;color:var(--blue-dark);margin-bottom:6px">${studentContext.profile}</div>
+        <div style="font-size:13px;color:var(--text-muted);line-height:1.6">${profileDesc}</div>
+      </div>
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--blue);margin-bottom:8px">Your Top Factors</div>
+      ${topFactors.map((f,i) => `<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #eef4fb"><div style="width:20px;height:20px;border-radius:50%;background:var(--blue);color:var(--white);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">${i+1}</div><div style="font-size:13px;color:var(--text);font-weight:${i<3?"700":"400"}">${f.label}</div></div>`).join("")}`;
+    container.appendChild(summaryEl);
+  }
+
+  phases.forEach((phase, pi) => {
+    const stage = studentContext.stage;
+    const isCurrent = pi === stage;
+    const isDone = pi < stage;
+    const phaseEl = document.createElement("div");
+    phaseEl.className = "phase";
+    totalSteps += phase.steps.length;
+    let stepsHtml = "";
+    if (phase.type === "timeline") {
+      stepsHtml = `<div class="timeline">`;
+      phase.steps.forEach((step, si) => {
+        const id = `${pi}-${si}`;
+        const wasDone = savedCompleted.has(id) || isDone;
+        if (wasDone) completedSteps.add(id);
+        stepsHtml += `<div class="timeline-item ${wasDone?"done":""}" id="tli-${id}" onclick="toggleTimeline('${id}')"><div class="tl-month">${step.month}</div><div class="tl-card"><div class="tl-title">${step.title}<div class="tl-check">&#10003;</div></div><div class="tl-desc">${step.desc}</div>${step.tag?`<span class="tl-tag ${step.tag}">${step.tag}</span>`:""}</div></div>`;
+      });
+      stepsHtml += `</div>`;
+    } else {
+      stepsHtml = `<div class="steps-grid">`;
+      phase.steps.forEach((step, si) => {
+        const id = `${pi}-${si}`;
+        const wasDone = savedCompleted.has(id) || isDone;
+        if (wasDone) completedSteps.add(id);
+        stepsHtml += `<div class="step-card ${wasDone?"done":""} ${isCurrent?"current-phase":""}" id="step-${id}" onclick="toggleStep('${id}')"><div class="step-check">&#10003;</div><div class="step-title">${step.title}</div><div class="step-desc">${step.desc}</div><span class="step-tag ${step.tag}">${step.tag||"action"}</span></div>`;
+      });
+      stepsHtml += `</div>`;
+    }
+    phaseEl.innerHTML = `<div class="phase-header"><div class="phase-num ${isCurrent?'current':''}">${phase.num}</div><div><div class="phase-name">${phase.name}${isCurrent?'<span class="phase-you-here">You are here</span>':''}</div><div class="phase-meta">${phase.anchor}</div></div></div>${stepsHtml}`;
+    container.appendChild(phaseEl);
+  });
+
+  if (selectedModules.rater) {
+    const raterEl = document.createElement("div");
+    raterEl.className = "phase";
+    raterEl.innerHTML = `<div class="phase-header"><div class="phase-num" style="font-size:10px">UNI</div><div><div class="phase-name">University Comparison Tool</div><div class="phase-meta">Rate, compare, and decide</div></div></div><div class="uni-rater"></div>`;
+    container.appendChild(raterEl);
+    renderUniRater(raterEl.querySelector(".uni-rater"), "research");
+  }
+  if (selectedModules.resources) {
+    const resEl = document.createElement("div");
+    resEl.className = "phase";
+    resEl.innerHTML = `<div class="phase-header"><div class="phase-num" style="font-size:10px">RES</div><div><div class="phase-name">Resource Directory</div><div class="phase-meta">Tools to use at every stage</div></div></div><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px"><div class="resource-card"><div class="resource-cat" style="color:var(--blue)">Program Research</div><a class="resource-link" href="https://thegradcafe.com" target="_blank"><div class="resource-name">The Grad Cafe</div><div class="resource-desc">Real acceptance data from past applicants</div></a><a class="resource-link" href="https://educationusa.state.gov" target="_blank"><div class="resource-name">EducationUSA</div><div class="resource-desc">Free US government advising centers</div></a></div><div class="resource-card"><div class="resource-cat" style="color:var(--green)">Scholarships</div><a class="resource-link" href="https://www.fastweb.com" target="_blank"><div class="resource-name">Fastweb</div><div class="resource-desc">Large scholarship database</div></a><a class="resource-link" href="https://www.profellow.com" target="_blank"><div class="resource-name">ProFellow</div><div class="resource-desc">Fellowships and funded programs</div></a></div><div class="resource-card"><div class="resource-cat" style="color:var(--red)">Visa and H-1B</div><a class="resource-link" href="https://www.myvisajobs.com" target="_blank"><div class="resource-name">MyVisaJobs</div><div class="resource-desc">Which employers sponsor H-1B</div></a><a class="resource-link" href="https://h1bgrader.com" target="_blank"><div class="resource-name">H1BGrader</div><div class="resource-desc">Employer approval rates</div></a></div><div class="resource-card"><div class="resource-cat" style="color:var(--orange)">Jobs</div><a class="resource-link" href="https://joinhandshake.com" target="_blank"><div class="resource-name">Handshake</div><div class="resource-desc">University job board</div></a><a class="resource-link" href="https://levels.fyi" target="_blank"><div class="resource-name">Levels.fyi</div><div class="resource-desc">Compensation data for negotiation</div></a></div><div class="resource-card"><div class="resource-cat" style="color:var(--text-muted)">Community</div><a class="resource-link" href="https://www.teamblind.com" target="_blank"><div class="resource-name">Blind</div><div class="resource-desc">Anonymous visa and salary discussions</div></a><a class="resource-link" href="https://www.reddit.com/r/f1visa" target="_blank"><div class="resource-name">r/f1visa</div><div class="resource-desc">Real F-1 advice from Reddit</div></a></div></div>`;
+    container.appendChild(resEl);
+  }
+
+  const done = completedSteps.size;
+  const pct = totalSteps > 0 ? Math.round((done/totalSteps)*100) : 0;
+  document.getElementById("progressText").textContent = `${done} of ${totalSteps} steps complete (${pct}%)`;
+  document.getElementById("progressBar").style.width = `${pct}%`;
+}
+
+// Try to restore on page load
+if (!loadState()) {
+  // Fresh visit, show landing page (already active by default)
+}
+
+function toggleChat() {
+  const w = document.getElementById("chatWindow");
+  const btn = document.getElementById("chatToggle");
+  w.classList.toggle("open");
+  btn.textContent = w.classList.contains("open") ? "Close" : "Ask AI";
+}
+function sendQuick(text) { document.getElementById("chatInput").value = text; sendMessage(); }
+async function sendMessage() {
+  const input = document.getElementById("chatInput");
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = "";
+  const msgs = document.getElementById("chatMessages");
+  const btn = document.getElementById("sendBtn");
+  msgs.innerHTML += `<div class="msg user"><div class="msg-bubble">${esc(text)}</div></div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+  const tid = "ty"+Date.now();
+  msgs.innerHTML += `<div class="msg bot" id="${tid}"><div class="msg-name">Reroot AI</div><div class="msg-bubble"><div class="typing-indicator"><span></span><span></span><span></span></div></div></div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+  btn.disabled = true;
+  const sys = `You are the Reroot AI, a practical advisor for international students navigating the US. Built by an international student from India who studied at University of New Haven (MS in I/O Psychology, GPA 3.96, commencement speaker), transitioned from intern to full-time at Retensa (HR tech), now navigating H-1B. Give specific, lived-in, actionable advice. Under 160 words. For immigration, give practical guidance and note they should confirm with their DSO or immigration attorney. Student: ${studentContext.name||"a student"} from ${studentContext.country||"abroad"}, studying ${studentContext.field||"a US program"}, goal: ${studentContext.goal||"full-time US employment"}.`;
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ model:"claude-sonnet-4-20250514", max_tokens:300, system:sys, messages:[{role:"user",content:text}] })
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || "Could not get a response. Please try again.";
+    document.getElementById(tid).remove();
+    msgs.innerHTML += `<div class="msg bot"><div class="msg-name">Reroot AI</div><div class="msg-bubble">${esc(reply)}</div></div>`;
+  } catch(e) {
+    document.getElementById(tid).remove();
+    msgs.innerHTML += `<div class="msg bot"><div class="msg-name">Reroot AI</div><div class="msg-bubble">Something went wrong. Please try again.</div></div>`;
+  }
+  btn.disabled = false;
+  msgs.scrollTop = msgs.scrollHeight;
+}
+function esc(t) { return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>"); }
+</script>
+</body>
+</html>
