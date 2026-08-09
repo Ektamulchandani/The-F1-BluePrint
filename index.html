@@ -21,20 +21,46 @@ body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--tex
 .badge .dot{width:7px;height:7px;background:var(--blue);border-radius:50%}
 .cta{background:var(--blue);color:var(--white);padding:14px 40px;border-radius:5px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:Arial}.cta:hover{background:var(--blue-dark)}
 .sub{font-size:11px;color:var(--text-muted);margin-top:14px}
-.wrap{max-width:600px;margin:0 auto;padding:36px 24px 100px}
+.wrap{max-width:620px;margin:0 auto;padding:36px 24px 100px}
 .card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:24px 28px;margin-bottom:16px}
 .card-title{font-size:18px;font-weight:700;color:var(--text);margin-bottom:5px}
 .card-sub{font-size:13px;color:var(--text-muted);margin-bottom:20px;line-height:1.6}
 label{display:block;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:5px;font-weight:700}
 input,select,textarea{width:100%;background:var(--white);border:1.5px solid var(--border);border-radius:5px;padding:10px 13px;color:var(--text);font-family:Arial;font-size:13px;outline:none}
 input:focus,select:focus,textarea:focus{border-color:var(--blue)}
+textarea{resize:none;height:120px;line-height:1.5}
 .setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media(max-width:500px){.setup-grid{grid-template-columns:1fr}}
-.btn{padding:11px 24px;border-radius:5px;border:none;font-family:Arial;font-size:13px;font-weight:700;cursor:pointer}.btn-primary{background:var(--blue);color:var(--white)}.btn-primary:hover{background:var(--blue-dark)}
+.btn{padding:11px 24px;border-radius:5px;border:none;font-family:Arial;font-size:13px;font-weight:700;cursor:pointer}.btn-primary{background:var(--blue);color:var(--white)}.btn-primary:hover{background:var(--blue-dark)}.btn-secondary{background:var(--bg-mid);color:var(--text-muted);border:1px solid var(--border)}
 .btn-full{width:100%;padding:13px;font-size:14px}
 .opt-btn{padding:13px 18px;background:var(--white);border:1.5px solid var(--border);border-radius:6px;cursor:pointer;font-size:13px;color:var(--text);font-family:Arial;text-align:left;transition:all 0.15s;display:block;width:100%;margin-bottom:8px}
 .opt-btn:hover{border-color:var(--blue-light);background:var(--blue-pale)}
-.opt-btn.selected{border-color:var(--blue);background:var(--blue-pale);font-weight:700}
+
+/* STEP BY STEP */
+.step-progress{display:flex;gap:4px;margin-bottom:24px}
+.step-dot{flex:1;height:4px;border-radius:2px;background:var(--blue-pale);transition:background 0.3s}
+.step-dot.done{background:var(--blue)}
+.step-dot.current{background:var(--blue-light)}
+.guide-card{background:var(--white);border:1.5px solid var(--border);border-radius:8px;padding:28px 32px;margin-bottom:16px}
+.guide-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--blue);margin-bottom:8px}
+.guide-title{font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px}
+.guide-desc{font-size:13px;color:var(--text-muted);line-height:1.65;margin-bottom:20px}
+.guide-action{margin-bottom:20px}
+.template-box{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:16px 18px;margin-bottom:12px;position:relative}
+.template-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:6px}
+.template-text{font-size:13px;color:var(--text);line-height:1.6;white-space:pre-wrap}
+.copy-btn{position:absolute;top:12px;right:12px;background:var(--blue);color:var(--white);border:none;border-radius:4px;padding:4px 10px;font-size:10px;font-weight:700;cursor:pointer;font-family:Arial}
+.copy-btn:hover{background:var(--blue-dark)}
+.resource-link{display:block;padding:10px 14px;border:1.5px solid var(--border);border-radius:6px;margin-bottom:8px;text-decoration:none;color:var(--text);transition:all 0.15s}
+.resource-link:hover{border-color:var(--blue-light);background:var(--blue-pale)}
+.resource-link-title{font-size:13px;font-weight:700;margin-bottom:2px}
+.resource-link-desc{font-size:11px;color:var(--text-muted)}
+.btn-row{display:flex;gap:10px;margin-top:20px}
+.prompt-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.prompt-item{font-size:13px;color:var(--text);padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:6px;line-height:1.5}
+.prompt-num{font-size:11px;font-weight:700;color:var(--blue);margin-bottom:2px}
+
+/* OTHER PATHS */
 .step-item{padding:12px 14px;border:1.5px solid var(--border);border-radius:6px;margin-bottom:8px;cursor:pointer;transition:all 0.15s;display:flex;gap:12px;align-items:flex-start}
 .step-item:hover{border-color:var(--blue-light)}
 .step-item.done{border-color:var(--blue);background:var(--blue-pale)}
@@ -49,8 +75,6 @@ input:focus,select:focus,textarea:focus{border-color:var(--blue)}
 .progress-mini-bar{flex:1;height:5px;background:var(--blue-pale);border-radius:3px}
 .progress-mini-fill{height:5px;border-radius:3px;background:var(--blue);transition:width 0.4s}
 .progress-mini-text{font-size:11px;color:var(--text-muted);font-weight:700;white-space:nowrap}
-.info-box{background:var(--blue-pale);border:1.5px solid var(--blue-light);border-radius:6px;padding:16px 20px;margin-bottom:16px;font-size:13px;color:var(--text);line-height:1.6}
-.info-box-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--blue);margin-bottom:6px}
 .coffeechat-box{background:var(--white);border:1.5px solid var(--green);border-radius:6px;padding:16px 20px;margin-bottom:16px}
 .coffeechat-title{font-size:14px;font-weight:700;color:var(--green);margin-bottom:4px}
 .coffeechat-desc{font-size:12px;color:var(--text-muted);margin-bottom:12px;line-height:1.5}
@@ -63,6 +87,8 @@ input:focus,select:focus,textarea:focus{border-color:var(--blue)}
 .email-btn{padding:10px 20px;background:var(--blue);color:var(--white);border:none;border-radius:5px;font-size:13px;font-weight:700;cursor:pointer;font-family:Arial}
 .share-bar{text-align:center;margin-top:16px}
 .share-btn{background:none;border:1.5px solid var(--border);border-radius:5px;padding:8px 18px;font-size:12px;font-weight:700;color:var(--text-muted);cursor:pointer;font-family:Arial}.share-btn:hover{border-color:var(--blue);color:var(--blue)}
+
+/* CHAT */
 .chat-section{position:fixed;bottom:22px;right:22px;z-index:100}
 .chat-toggle{padding:10px 18px;background:var(--blue);border-radius:4px;border:none;cursor:pointer;font-size:13px;font-weight:700;color:var(--white);font-family:Arial;box-shadow:0 4px 16px #2a7abf40}.chat-toggle:hover{background:var(--blue-dark)}
 .chat-window{display:none;position:absolute;bottom:50px;right:0;width:340px;background:var(--white);border:1px solid var(--border);border-radius:8px;overflow:hidden;box-shadow:0 12px 40px #1a2e4230;flex-direction:column}
@@ -83,7 +109,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--blue)}
 .chat-send{width:34px;height:34px;background:var(--blue);border:none;border-radius:4px;cursor:pointer;color:var(--white);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px}.chat-send:hover{background:var(--blue-dark)}.chat-send:disabled{opacity:0.4;cursor:not-allowed}
 .typing-indicator{display:flex;gap:4px;align-items:center}.typing-indicator span{width:5px;height:5px;background:var(--text-muted);border-radius:50%;animation:bounce 1.2s infinite}.typing-indicator span:nth-child(2){animation-delay:0.2s}.typing-indicator span:nth-child(3){animation-delay:0.4s}
 @keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
-@media(max-width:500px){.email-row{flex-direction:column}}
+@media(max-width:500px){.email-row{flex-direction:column}.setup-grid{grid-template-columns:1fr}.btn-row{flex-direction:column}}
 </style>
 </head>
 <body>
@@ -108,68 +134,67 @@ input:focus,select:focus,textarea:focus{border-color:var(--blue)}
     <div class="card-title">Tell us about yourself</div>
     <div class="card-sub">This helps us personalize your roadmap.</div>
     <div class="setup-grid" style="margin-bottom:14px">
-      <div><label>Your Name</label><input type="text" id="sName" placeholder="e.g. Priya Sharma"></div>
+      <div><label>First Name</label><input type="text" id="sName" placeholder="e.g. Priya"></div>
       <div><label>Home Country</label><input type="text" id="sCountry" placeholder="e.g. India"></div>
     </div>
-    <div style="margin-bottom:14px"><label>Graduate Program</label><input type="text" id="sProgram" placeholder="e.g. MS in I/O Psychology"></div>
+    <div style="margin-bottom:14px"><label>Graduate Program You Are Interested In</label><input type="text" id="sProgram" placeholder="e.g. MS in I/O Psychology"></div>
     <button class="btn btn-primary btn-full" onclick="finishSetup()">Continue</button>
   </div>
 </div>
 </div>
 
-<!-- Q2: WHERE ARE YOU -->
+<!-- WHERE ARE YOU -->
 <div class="page" id="page-where">
 <div class="nav"><div class="nav-logo">Re<span>root</span></div><div class="nav-right"><button class="nav-link" onclick="goTo('page-setup')">Back</button></div></div>
 <div class="wrap">
   <div class="card">
     <div class="card-title">Where are you in the process?</div>
     <div class="card-sub" id="whereGreeting"></div>
-    <button class="opt-btn" onclick="goToPath('exploring')">Still exploring graduate programs</button>
-    <button class="opt-btn" onclick="goToPath('applied')">Applied, waiting for decisions</button>
-    <button class="opt-btn" onclick="goToPath('offers')">Have offers, deciding which to accept</button>
-    <button class="opt-btn" onclick="goToPath('accepted')">Accepted an offer, preparing to arrive</button>
-    <button class="opt-btn" onclick="goToPath('oncampus')">Already on campus</button>
+    <button class="opt-btn" onclick="startGuide('exploring')">Still exploring graduate programs</button>
+    <button class="opt-btn" onclick="startGuide('applied')">Applied, waiting for decisions</button>
+    <button class="opt-btn" onclick="startGuide('offers')">Have offers, deciding which to accept</button>
+    <button class="opt-btn" onclick="startGuide('accepted')">Accepted an offer, preparing to arrive</button>
+    <button class="opt-btn" onclick="goTo('page-semester')">Already on campus</button>
   </div>
 </div>
 </div>
 
-<!-- Q3: ON CAMPUS -->
+<!-- SEMESTER -->
 <div class="page" id="page-semester">
 <div class="nav"><div class="nav-logo">Re<span>root</span></div><div class="nav-right"><button class="nav-link" onclick="goTo('page-where')">Back</button></div></div>
 <div class="wrap">
   <div class="card">
     <div class="card-title">Which part of the program are you in?</div>
-    <div class="card-sub">This determines what you should focus on right now.</div>
-    <button class="opt-btn" onclick="goToPath('sem12')">1st or 2nd semester</button>
-    <button class="opt-btn" onclick="goToPath('summer')">Summer</button>
-    <button class="opt-btn" onclick="goToPath('sem34')">3rd or 4th semester</button>
+    <button class="opt-btn" onclick="startGuide('sem12')">1st or 2nd semester</button>
+    <button class="opt-btn" onclick="goTo('page-summer')">Summer</button>
+    <button class="opt-btn" onclick="startGuide('sem34')">3rd or 4th semester</button>
   </div>
 </div>
 </div>
 
-<!-- Q4: SUMMER BRANCH -->
+<!-- SUMMER -->
 <div class="page" id="page-summer">
 <div class="nav"><div class="nav-logo">Re<span>root</span></div><div class="nav-right"><button class="nav-link" onclick="goTo('page-semester')">Back</button></div></div>
 <div class="wrap">
   <div class="card">
     <div class="card-title">Do you have an internship this summer?</div>
-    <div class="card-sub">This changes what you should be doing right now.</div>
-    <button class="opt-btn" onclick="goToPath('summer_yes')">Yes, I am on an internship</button>
-    <button class="opt-btn" onclick="goToPath('summer_no')">No, I am still looking</button>
+    <button class="opt-btn" onclick="startGuide('summer_yes')">Yes, I am on an internship</button>
+    <button class="opt-btn" onclick="startGuide('summer_no')">No, I am still looking</button>
   </div>
 </div>
 </div>
 
-<!-- ROADMAP -->
-<div class="page" id="page-roadmap">
+<!-- GUIDED ROADMAP -->
+<div class="page" id="page-guide">
 <div class="nav">
   <div class="nav-logo">Re<span>root</span></div>
   <div class="nav-right"><button class="nav-link" onclick="goTo('page-where')">Change my stage</button></div>
 </div>
 <div class="wrap">
-  <div id="roadmapContent"></div>
+  <div class="step-progress" id="stepProgress"></div>
+  <div id="guideContent"></div>
 
-  <div class="email-bar">
+  <div class="email-bar" id="emailSection" style="display:none">
     <div class="email-bar-title">Join the Rerooters</div>
     <div class="email-bar-desc">Get a short weekly email with your next steps and tips from students who have been through it.</div>
     <div class="email-row">
@@ -178,9 +203,8 @@ input:focus,select:focus,textarea:focus{border-color:var(--blue)}
     </div>
     <div id="emailMsg" style="font-size:11px;color:var(--green);margin-top:6px;display:none">You are in. Welcome to the Rerooters.</div>
   </div>
-
-  <div class="share-bar">
-    <button class="share-btn" onclick="if(navigator.share){navigator.share({title:'Reroot',text:'A free guide for international graduate students navigating the US.',url:'https://reroot.it.com'})}else{navigator.clipboard.writeText('https://reroot.it.com').then(()=>{this.textContent='Link copied!';setTimeout(()=>this.textContent='Share Reroot with someone who needs it',2000)})}">Share Reroot with someone who needs it</button>
+  <div class="share-bar" id="shareSection" style="display:none">
+    <button class="share-btn" onclick="if(navigator.share){navigator.share({title:'Reroot',text:'A free guide for international graduate students.',url:'https://reroot.it.com'})}else{navigator.clipboard.writeText('https://reroot.it.com').then(()=>{this.textContent='Link copied!';setTimeout(()=>this.textContent='Share Reroot with someone who needs it',2000)})}">Share Reroot with someone who needs it</button>
   </div>
 </div>
 </div>
@@ -210,8 +234,8 @@ input:focus,select:focus,textarea:focus{border-color:var(--blue)}
 
 <script>
 let user = {};
-let completedSteps = new Set();
 let currentPath = '';
+let currentStep = 0;
 
 function goTo(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -227,141 +251,353 @@ function finishSetup(){
   goTo('page-where');
 }
 
-function goToPath(path){
+function copyText(btn, id){
+  const el = document.getElementById(id);
+  if(el){
+    navigator.clipboard.writeText(el.textContent.trim()).then(()=>{
+      btn.textContent='Copied!';
+      setTimeout(()=>btn.textContent='Copy',2000);
+    });
+  }
+}
+
+// GUIDED STEPS DATA
+const guideData = {
+  exploring: [
+    {
+      label: "Step 1 of 7",
+      title: "What is your priority?",
+      desc: "Before you start searching for programs, get clear on what matters most to you. This shapes everything: which schools to target, how to fund it, and where you will end up working.",
+      content: `<div style="font-size:13px;color:var(--text);margin-bottom:16px;line-height:1.6">Ask yourself: Am I optimizing for the best education, the lowest cost, the strongest career pipeline, or the best location for my target industry? Your answer changes which programs make the shortlist.</div>
+      <div style="font-size:13px;font-weight:700;margin-bottom:8px">Start your search here:</div>
+      <a class="resource-link" href="https://www.usnews.com/best-graduate-schools" target="_blank">
+        <div class="resource-link-title">US News Best Graduate Schools</div>
+        <div class="resource-link-desc">Search by field, compare programs, see rankings, tuition, and enrollment data. Start here.</div>
+      </a>
+      <a class="resource-link" href="https://educationusa.state.gov" target="_blank">
+        <div class="resource-link-title">EducationUSA</div>
+        <div class="resource-link-desc">Free US government advising centers in most countries. Underused and very helpful.</div>
+      </a>
+      <a class="resource-link" href="https://thegradcafe.com" target="_blank">
+        <div class="resource-link-title">The Grad Cafe</div>
+        <div class="resource-link-desc">See real acceptance data, GPA scores, and GRE scores from past applicants at your target schools.</div>
+      </a>`
+    },
+    {
+      label: "Step 2 of 7",
+      title: "Research scholarships before you shortlist",
+      desc: "Most students pick programs first and look for funding second. Do it the other way around. Know what scholarships exist before you fall in love with a school you cannot afford.",
+      content: `<div style="font-size:13px;color:var(--text);margin-bottom:16px;line-height:1.6">Look into: merit-based aid, need-based aid, country-specific scholarships, departmental assistantships, and tuition waivers. Many have separate deadlines from admissions.</div>
+      <a class="resource-link" href="https://www.fastweb.com" target="_blank">
+        <div class="resource-link-title">Fastweb</div>
+        <div class="resource-link-desc">Large scholarship database. Filter by your background, field, and country.</div>
+      </a>
+      <a class="resource-link" href="https://www.internationalscholarships.com" target="_blank">
+        <div class="resource-link-title">InternationalScholarships.com</div>
+        <div class="resource-link-desc">Scholarships specifically for international students coming to the US.</div>
+      </a>
+      <a class="resource-link" href="https://www.profellow.com" target="_blank">
+        <div class="resource-link-title">ProFellow</div>
+        <div class="resource-link-desc">Fellowships and fully funded programs for graduate students.</div>
+      </a>`
+    },
+    {
+      label: "Step 3 of 7",
+      title: "Check if your target programs are STEM designated",
+      desc: "STEM designation matters because it gives you a 24-month OPT extension after graduation, which means 3 years of work authorization instead of 1. This dramatically affects your ability to get an H-1B.",
+      content: `<div style="font-size:13px;color:var(--text);margin-bottom:12px;line-height:1.6">Not sure if your program qualifies? Email the admissions office directly. Here is a template you can copy and send.</div>
+      <div class="template-box">
+        <div class="template-label">Email template: Is this program STEM designated?</div>
+        <button class="copy-btn" onclick="copyText(this,'tmpl-stem')">Copy</button>
+        <div class="template-text" id="tmpl-stem">Subject: STEM Designation and CPT Policy for ${user.program || '[Your Program]'}
+
+Dear Admissions Team,
+
+My name is ${user.name || '[Your Name]'} and I am an international student from ${user.country || '[Your Country]'} considering applying to ${user.program || '[Program Name]'}.
+
+I have two questions that will help me make an informed decision:
+
+1. Is this program STEM designated (eligible for the 24-month OPT extension)?
+2. How many CPT authorizations are students typically allowed during the program, and after how many semesters do students become eligible?
+
+Thank you for your time. I look forward to hearing from you.
+
+Best regards,
+${user.name || '[Your Name]'}</div>
+      </div>
+      <div style="font-size:12px;color:var(--text-muted);line-height:1.5">Send this to every program on your shortlist. The answers will significantly affect your career timeline in the US.</div>`
+    },
+    {
+      label: "Step 4 of 7",
+      title: "GRE / GMAT / IELTS / TOEFL",
+      desc: "Different programs require different tests. Many STEM programs have waived the GRE entirely. Do not waste months studying for a test you do not need.",
+      content: `<div style="font-size:13px;color:var(--text);margin-bottom:12px;line-height:1.6">Email each program to confirm exactly what they require. Here is a template.</div>
+      <div class="template-box">
+        <div class="template-label">Email template: Test requirements</div>
+        <button class="copy-btn" onclick="copyText(this,'tmpl-tests')">Copy</button>
+        <div class="template-text" id="tmpl-tests">Subject: Test Requirements for International Applicants to ${user.program || '[Your Program]'}
+
+Dear Admissions Team,
+
+My name is ${user.name || '[Your Name]'} and I am an international applicant from ${user.country || '[Your Country]'} planning to apply to ${user.program || '[Program Name]'}.
+
+Could you confirm which standardized tests are required for admission? Specifically:
+- Is the GRE or GMAT required, recommended, or waived?
+- What English proficiency test do you accept (TOEFL, IELTS, Duolingo)?
+- What are the minimum score requirements?
+
+Thank you for your help.
+
+Best regards,
+${user.name || '[Your Name]'}</div>
+      </div>
+      <div style="font-size:13px;font-weight:700;margin-top:16px;margin-bottom:8px">Study resources</div>
+      <a class="resource-link" href="https://www.ets.org/gre" target="_blank">
+        <div class="resource-link-title">GRE Official (ETS)</div>
+        <div class="resource-link-desc">Free practice tests, study materials, and registration</div>
+      </a>
+      <a class="resource-link" href="https://www.ets.org/toefl" target="_blank">
+        <div class="resource-link-title">TOEFL Official (ETS)</div>
+        <div class="resource-link-desc">Free practice tests and preparation resources</div>
+      </a>
+      <a class="resource-link" href="https://www.ielts.org" target="_blank">
+        <div class="resource-link-title">IELTS Official</div>
+        <div class="resource-link-desc">Test dates, preparation materials, and practice tests</div>
+      </a>
+      <a class="resource-link" href="https://magoosh.com" target="_blank">
+        <div class="resource-link-title">Magoosh</div>
+        <div class="resource-link-desc">Affordable GRE, GMAT, TOEFL, and IELTS prep with video lessons</div>
+      </a>`
+    },
+    {
+      label: "Step 5 of 7",
+      title: "Write your Statement of Purpose",
+      desc: "Your SOP is your story. It is not a resume in paragraph form. It is the answer to: why this program, why now, and what will you do with it?",
+      content: `<div style="font-size:13px;font-weight:700;margin-bottom:8px">Prompts to guide your writing</div>
+      <div class="prompt-list">
+        <div class="prompt-item"><div class="prompt-num">Prompt 1</div>What specific experience made you realize you wanted to study ${user.program || 'this field'}? Tell that story in 3 sentences.</div>
+        <div class="prompt-item"><div class="prompt-num">Prompt 2</div>Name 1 to 2 professors at this university whose research connects to what you want to do. Why their work specifically?</div>
+        <div class="prompt-item"><div class="prompt-num">Prompt 3</div>What career outcome are you targeting after graduation? Be specific: job title, industry, type of employer.</div>
+        <div class="prompt-item"><div class="prompt-num">Prompt 4</div>What gap in your knowledge or skills will this program fill? What can you not learn anywhere else?</div>
+        <div class="prompt-item"><div class="prompt-num">Prompt 5</div>What will you contribute to the program? Research interests, professional experience, a unique perspective from ${user.country || 'your home country'}?</div>
+      </div>
+      <a class="resource-link" href="https://writeivy.com/structure-is-magic-a-guide-to-the-graduate-sop/" target="_blank">
+        <div class="resource-link-title">Write Ivy: SOP Structure Guide</div>
+        <div class="resource-link-desc">One of the best free guides on how to structure a graduate school SOP</div>
+      </a>
+      <a class="resource-link" href="https://thegradcafe.com" target="_blank">
+        <div class="resource-link-title">The Grad Cafe Forums</div>
+        <div class="resource-link-desc">Read SOPs that worked from students who got into your target programs</div>
+      </a>`
+    },
+    {
+      label: "Step 6 of 7",
+      title: "Request Letters of Recommendation",
+      desc: "Ask at least 3 months before your deadline. The more you make it easy for your recommender, the stronger the letter will be.",
+      content: `<div style="font-size:13px;color:var(--text);margin-bottom:12px;line-height:1.6">Send your recommender your resume, your SOP draft, and specific points you want them to highlight. Here is a template.</div>
+      <div class="template-box">
+        <div class="template-label">Email template: Requesting a letter of recommendation</div>
+        <button class="copy-btn" onclick="copyText(this,'tmpl-lor')">Copy</button>
+        <div class="template-text" id="tmpl-lor">Subject: Letter of Recommendation Request for Graduate School Application
+
+Dear Professor [Name],
+
+I hope you are doing well. I am writing to ask if you would be willing to write a letter of recommendation for my application to ${user.program || '[Program Name]'} at [University Name].
+
+I am applying because [1 sentence on why this program]. I believe your letter would be especially valuable because [mention specific class, project, or interaction that connects to this application].
+
+The deadline is [date]. I have attached my resume and a draft of my Statement of Purpose for your reference.
+
+If you are able to support my application, I would be happy to provide any additional information you need.
+
+Thank you for considering this.
+
+Best regards,
+${user.name || '[Your Name]'}</div>
+      </div>
+      <div style="font-size:12px;color:var(--text-muted);line-height:1.5;margin-top:8px">Tip: if a professor says they cannot write you a strong letter, thank them and ask someone else. A lukewarm letter is worse than no letter.</div>`
+    },
+    {
+      label: "Step 7 of 7",
+      title: "Connect with alumni and current students",
+      desc: "The best information about a program does not come from the website. It comes from people who are living it right now.",
+      content: `<div style="font-size:13px;color:var(--text);margin-bottom:12px;line-height:1.6">Search LinkedIn for current students and recent graduates of your target programs. Send them a connection request with a short note. Here is a template.</div>
+      <div class="template-box">
+        <div class="template-label">LinkedIn connection message template</div>
+        <button class="copy-btn" onclick="copyText(this,'tmpl-linkedin')">Copy</button>
+        <div class="template-text" id="tmpl-linkedin">Hi [Name],
+
+I am an international student from ${user.country || '[Country]'} considering ${user.program || '[Program]'} at [University]. I came across your profile and saw that you are currently in the program (or recently graduated).
+
+Would you be open to a quick 10-minute chat? I would love to hear about your experience, especially how Career Services supports international students and how easy it was to find internship opportunities.
+
+No pressure at all. Thank you for considering it.
+
+Best,
+${user.name || '[Your Name]'}</div>
+      </div>
+      <div style="font-size:13px;font-weight:700;margin-top:16px;margin-bottom:8px">Questions to ask them</div>
+      <div class="prompt-list">
+        <div class="prompt-item">How easy was it to get an on-campus job?</div>
+        <div class="prompt-item">How good is Career Services for F-1 students specifically?</div>
+        <div class="prompt-item">What was the biggest adjustment coming from outside the US?</div>
+        <div class="prompt-item">If you could change one thing about the program, what would it be?</div>
+        <div class="prompt-item">What surprised you the most about studying here?</div>
+      </div>
+      <div style="font-size:12px;color:var(--text-muted);line-height:1.5">Aim to talk to at least 2 people per program on your shortlist. Their answers will change your ranking.</div>`
+    },
+  ],
+};
+
+// OTHER PATHS (checklist style for now, will convert to guided later)
+const checklistPaths = {
+  applied: {title:"Applied, Waiting for Decisions",label:"Waiting on decisions",intro:"The waiting period is not dead time. Here is what to do right now.",steps:[
+    {t:"Talk to current students at your target schools",d:"Ask: how is Career Services for F-1 students? How easy is it to get an on-campus job?",tag:"career"},
+    {t:"Research on-campus job availability at each school",d:"Some schools have robust on-campus hiring. Others barely have options.",tag:""},
+    {t:"Apply to external scholarships now",d:"Many scholarships have separate deadlines from admissions. Do not wait for an acceptance to start.",tag:"urgent"},
+    {t:"Build your LinkedIn profile",d:"Add your target program, expected start date, and connect with alumni.",tag:"career"},
+    {t:"Research housing options at each school",d:"On-campus housing fills fast. Get on waitlists now.",tag:""},
+  ]},
+  offers: {title:"Deciding Between Offers",label:"Choosing a program",intro:"Do not choose by gut feeling. Here is what to actually compare.",steps:[
+    {t:"Compare total cost of attendance, not just tuition",d:"Add housing, food, insurance, transportation. A cheaper city can save you tens of thousands.",tag:"urgent"},
+    {t:"Compare Career Services quality for international students",d:"Ask alumni directly: did Career Services help you get an internship as an F-1 student?",tag:"career"},
+    {t:"Check CPT eligibility timelines",d:"If one program lets you intern after one semester and another requires a year, that changes everything.",tag:"visa"},
+    {t:"Look at internship and job placement rates",d:"Ask: what percentage of international students get internships? Where do they work after?",tag:"career"},
+    {t:"Negotiate before you commit",d:"If one school offered more money, tell the other. Be polite, direct, and show the competing offer.",tag:"urgent"},
+  ],extra:"coffeechat"},
+  accepted: {title:"Accepted, Preparing to Arrive",label:"Preparing to arrive",intro:"You said yes. Here is everything to do before you land.",steps:[
+    {t:"Receive and review your I-20",d:"Your most important document. Verify program end date and enrollment level.",tag:"visa"},
+    {t:"Pay SEVIS fee ($350) and book visa interview",d:"Pay before your interview. Embassy wait times can be months.",tag:"visa"},
+    {t:"Secure housing before arrival",d:"On-campus housing fills fast. Contact the international student office immediately.",tag:"urgent"},
+    {t:"Plan your US bank account",d:"Chase and Bank of America let you start before arrival.",tag:""},
+    {t:"Connect with alumni and current students on LinkedIn",d:"Ask what they wish they knew before arriving.",tag:"career"},
+    {t:"Research on-campus job opportunities",d:"Library, dining, student offices. Apply early.",tag:"career"},
+  ]},
+  sem12: {title:"1st or 2nd Semester",label:"Building your foundation",intro:"Everything you do now sets up your internship search.",steps:[
+    {t:"Attend every International Student Orientation session",d:"Learn CPT/OPT rules and meet your DSO.",tag:"urgent"},
+    {t:"Visit Career Services in your first week",d:"Get your resume reviewed. Get on the mailing list.",tag:"career"},
+    {t:"Update your resume to US standards",d:"No photo. No DOB. Action verbs. Quantified results.",tag:"career"},
+    {t:"Join 2 to 3 clubs with intention",d:"One professional, one cultural, one leadership.",tag:"career"},
+    {t:"Start coffee chats now",d:"2 to 3 per week on LinkedIn. Alumni first.",tag:"career"},
+    {t:"Look for on-campus jobs",d:"Apply early. These help with cash flow and SSN.",tag:"urgent"},
+    {t:"Apply to summer internships starting in January",d:"Handshake, LinkedIn, direct career pages. Filter for CPT.",tag:"urgent"},
+  ]},
+  sem34: {title:"3rd or 4th Semester",label:"Applying for full-time",intro:"Your goal is to secure a full-time offer before you graduate.",steps:[
+    {t:"Filter every application by H-1B sponsorship history",d:"Use MyVisaJobs.com or H1BGrader.com.",tag:"visa"},
+    {t:"Apply to full-time roles now",d:"Full-time offers come out months before graduation.",tag:"urgent"},
+    {t:"Take on a leadership role in a club",d:"Employers want to see you initiated something.",tag:"career"},
+    {t:"Apply for OPT 90 days before graduation",d:"Processing takes 3 to 5 months.",tag:"urgent"},
+    {t:"Start the H-1B conversation in January",d:"Your employer needs months to prepare the petition.",tag:"visa"},
+    {t:"Negotiate your offer, even on OPT",d:"Use Levels.fyi and Glassdoor for market rates.",tag:"career"},
+  ]},
+  summer_yes: {title:"Summer: On Internship",label:"Proving yourself",intro:"Turn this into a return offer or a strong reference.",steps:[
+    {t:"Go above and beyond from week one",d:"Volunteer for stretch projects.",tag:"career"},
+    {t:"Document every deliverable as you go",d:"Save outputs, screenshots, feedback.",tag:"urgent"},
+    {t:"Ask for feedback at the midpoint",d:"At week 5, ask what to improve.",tag:"career"},
+    {t:"Apply to fall opportunities in parallel",d:"Not every internship converts.",tag:"urgent"},
+    {t:"Update LinkedIn with your internship",d:"Recruiters notice active profiles.",tag:"career"},
+  ]},
+  summer_no: {title:"Summer: Still Looking",label:"Finding an opportunity",intro:"It is not too late. Here is what to do right now.",steps:[
+    {t:"Apply to smaller companies and startups",d:"They hire on rolling timelines.",tag:"urgent"},
+    {t:"Reach out to every coffee chat contact",d:"Be specific about what you can do.",tag:"career"},
+    {t:"Ask professors about research assistantships",d:"Summer RAs count as experience.",tag:"career"},
+    {t:"Use this time to build projects",d:"Take a course, write on LinkedIn. Show you did not sit idle.",tag:"career"},
+    {t:"Keep applying for fall internships",d:"Fall recruiting starts in summer.",tag:"urgent"},
+  ]},
+};
+
+let completedSteps = new Set();
+
+function startGuide(path){
   currentPath = path;
-  if(path === 'oncampus'){goTo('page-semester');return;}
-  if(path === 'summer'){goTo('page-summer');return;}
-  renderRoadmap(path);
-  goTo('page-roadmap');
+  currentStep = 0;
+  if(guideData[path]){
+    renderGuideStep();
+    goTo('page-guide');
+  } else {
+    renderChecklist(path);
+    goTo('page-guide');
+  }
   saveState();
 }
 
-const paths = {
-  exploring: {
-    title: "Exploring Graduate Programs",
-    label: "You are here: researching programs",
-    intro: "Before you shortlist, you need to understand what actually matters. Rankings are not the full picture. Here is what to focus on right now.",
-    steps: [
-      {t:"Research scholarship categories first",d:"Merit-based, need-based, country-specific, departmental assistantships. Know what funding exists before you fall in love with a school you cannot afford.",tag:"urgent"},
-      {t:"Look up where alumni of each program work",d:"Search LinkedIn for graduates of your target programs. If alumni are working at companies you want to work at, that program has the pipeline you need.",tag:"career"},
-      {t:"Check each program's CPT eligibility timeline",d:"Some programs require a full year before you can do an internship (CPT). Others allow it sooner. This affects your entire career timeline.",tag:"visa"},
-      {t:"Prepare for GRE / GMAT / IELTS / TOEFL",d:"Know which tests your target programs require. Many STEM programs waive GRE now. Check each school individually.",tag:""},
-      {t:"Write your Statement of Purpose",d:"Name professors you want to work with, research you are interested in, and the career outcome you are targeting. Be specific. Generic SOPs do not stand out.",tag:""},
-      {t:"Request Letters of Recommendation early",d:"Ask recommenders 3 months before deadlines. Give them your SOP, resume, and bullet points on what to highlight.",tag:"urgent"},
-    ]
-  },
-  applied: {
-    title: "Applied, Waiting for Decisions",
-    label: "You are here: waiting on decisions",
-    intro: "The waiting period is not dead time. Here is what you should be doing right now while you wait.",
-    steps: [
-      {t:"Start talking to current students at your target schools",d:"Search LinkedIn, find students in your program. Ask them: how is Career Services for F-1 students? How easy is it to get an on-campus job?",tag:"career"},
-      {t:"Research on-campus job availability at each school",d:"Some schools have robust on-campus hiring. Others barely have options. This affects your cash flow from day one.",tag:""},
-      {t:"Begin your scholarship application process",d:"Many scholarships have separate deadlines from admissions. Apply to external scholarships now while you wait.",tag:"urgent"},
-      {t:"Build your LinkedIn profile",d:"Add your target program, expected start date, and connect with alumni. Your US career starts before you arrive.",tag:"career"},
-      {t:"Research housing options at each school",d:"On-campus housing fills fast. Get on waitlists now even before your decision comes in.",tag:""},
-    ]
-  },
-  offers: {
-    title: "Deciding Between Offers",
-    label: "You are here: choosing a program",
-    intro: "This is one of the biggest decisions you will make. Do not choose by gut feeling or brand name alone. Here is what to actually compare.",
-    steps: [
-      {t:"Compare scholarship and total cost of attendance",d:"Tuition is not the full picture. Add housing, food, insurance, and transportation. A cheaper program with lower cost of living can save you tens of thousands.",tag:"urgent"},
-      {t:"Compare Career Services quality for international students",d:"Ask alumni directly: did Career Services help you get an internship as an F-1 student? Some schools are great for domestic students but useless for internationals.",tag:"career"},
-      {t:"Check CPT eligibility timelines",d:"If one program lets you do an internship after one semester and another requires a full year, that changes your career timeline significantly.",tag:"visa"},
-      {t:"Look at internship and job placement rates",d:"Ask each program: what percentage of international students get internships? Where do they work after graduation?",tag:"career"},
-      {t:"Compare location relative to your target industry",d:"If you want to work in tech, being near a tech hub matters. If you want consulting, proximity to major cities matters.",tag:""},
-      {t:"Negotiate before you commit",d:"If one school offered you more money, tell the other school. They negotiate more than you think. Be polite, direct, and show the competing offer.",tag:"urgent"},
-    ]
-  },
-  accepted: {
-    title: "Accepted, Preparing to Arrive",
-    label: "You are here: preparing to arrive",
-    intro: "You said yes. Now the real preparation begins. Here is everything to do before you land.",
-    steps: [
-      {t:"Receive and review your I-20",d:"Your most important document. Verify program end date and enrollment level. Keep physical and digital copies in multiple locations.",tag:"visa"},
-      {t:"Pay SEVIS fee ($350) and book visa interview",d:"Pay before your interview. Keep the receipt. Embassy wait times can be months, so book as early as possible.",tag:"visa"},
-      {t:"Secure housing before arrival",d:"On-campus housing fills within days. Contact the international student office immediately. If off-campus, research neighborhoods and average rent.",tag:"urgent"},
-      {t:"Plan your US bank account",d:"Chase and Bank of America let you start before arrival. Bring your I-20, passport, and visa stamp when you go in.",tag:""},
-      {t:"Start connecting with alumni and current students",d:"Search LinkedIn for people in your program. Ask what they wish they knew before arriving. This gives you a head start on networking.",tag:"career"},
-      {t:"Research on-campus job opportunities",d:"Many schools hire student workers in the library, dining hall, and student offices. Apply early because positions fill fast.",tag:"career"},
-    ]
-  },
-  sem12: {
-    title: "1st or 2nd Semester",
-    label: "You are here: building your foundation",
-    intro: "Everything you do in your first two semesters sets up your internship search. Here is what to focus on.",
-    steps: [
-      {t:"Attend every International Student Orientation session",d:"This is where you learn CPT/OPT rules and meet the DSO who signs off on your work authorizations. Do not skip any of it.",tag:"urgent"},
-      {t:"Visit Career Services in your first week",d:"Get your resume reviewed. Get on the mailing list for internship postings and employer events.",tag:"career"},
-      {t:"Update your resume to US standards",d:"No photo. No date of birth. Action verbs, quantified results. Have Career Services review it before it goes anywhere.",tag:"career"},
-      {t:"Join 2 to 3 clubs with intention",d:"One professional club in your field. One cultural org. One leadership opportunity. Quality over quantity.",tag:"career"},
-      {t:"Start coffee chats now, not next semester",d:"2 to 3 per week on LinkedIn. Alumni first. Not to ask for jobs, but to learn the industry and get warm for internship season.",tag:"career"},
-      {t:"Look for on-campus jobs",d:"Library, dining, student offices, research assistantships. Apply early, these fill fast and they help with cash flow and your SSN application.",tag:"urgent"},
-      {t:"Understand your CPT eligibility timeline",d:"Ask your DSO in week one. Most programs require one full academic year before CPT. Plan your internship search around this.",tag:"visa"},
-      {t:"Apply to summer internships starting in January",d:"Use Handshake, LinkedIn, and direct company career pages. Filter for CPT eligibility. Tailor every application.",tag:"urgent"},
-    ]
-  },
-  sem34: {
-    title: "3rd or 4th Semester",
-    label: "You are here: applying for full-time",
-    intro: "Your goal now is to secure a full-time offer before you graduate. Everything else serves that goal.",
-    steps: [
-      {t:"Filter every application by H-1B sponsorship history",d:"Use MyVisaJobs.com or H1BGrader.com before applying anywhere. Focus on employers with a track record of H-1B approvals in your field.",tag:"visa"},
-      {t:"Apply to full-time roles now, not next semester",d:"Full-time offers come out months before graduation. Do not wait until your last semester.",tag:"urgent"},
-      {t:"Take on a leadership role in at least one club",d:"Employers want to see you initiated something, not just attended. Document what you built.",tag:"career"},
-      {t:"Interview actively, treat every one as practice",d:"Even if a role is not your first choice, go through the interview. Write a debrief note after each one.",tag:"career"},
-      {t:"Apply for OPT 90 days before graduation",d:"Processing takes 3 to 5 months. Missing this window creates a gap in your work authorization. Do not wait.",tag:"urgent"},
-      {t:"Start the H-1B conversation with your employer in January",d:"H-1B is filed in April. Your employer needs months to prepare. If you are starting after May graduation, bring this up in January.",tag:"visa"},
-      {t:"Negotiate your offer, even on OPT",d:"Use Levels.fyi and Glassdoor. Total compensation includes base, bonus, equity, and benefits.",tag:"career"},
-    ]
-  },
-  summer_yes: {
-    title: "Summer: On Internship",
-    label: "You are here: proving yourself",
-    intro: "You got the internship. Now your job is to turn it into a return offer or a strong reference. Here is how.",
-    steps: [
-      {t:"Go above and beyond from week one",d:"Treat this like a 10-week interview. Volunteer for stretch projects. Your manager's impression affects your return offer.",tag:"career"},
-      {t:"Document every deliverable as you go",d:"Save outputs, screenshots, feedback. You will use these for your resume and future interviews. Do not wait until the last week.",tag:"urgent"},
-      {t:"Ask for feedback at the midpoint",d:"At week 5, ask your manager: is there anything I should be doing differently? This gives you time to adjust.",tag:"career"},
-      {t:"Keep networking inside and outside the company",d:"Schedule informal chats with people in other teams. Your next opportunity may come from someone at the intern mixer.",tag:"career"},
-      {t:"Apply to fall and spring opportunities in parallel",d:"Not every internship converts. Apply now while you have recent project experience and momentum.",tag:"urgent"},
-      {t:"Update LinkedIn with your internship experience",d:"Add the company, role, and 2 to 3 bullet points. Recruiters notice active profiles with real experience.",tag:"career"},
-    ]
-  },
-  summer_no: {
-    title: "Summer: Still Looking",
-    label: "You are here: finding an opportunity",
-    intro: "It is not too late. Summer internship recruiting runs later than people think. Here is what to do right now.",
-    steps: [
-      {t:"Apply to smaller companies and startups",d:"Big companies fill early. Smaller companies and startups hire on rolling timelines and are more likely to sponsor CPT.",tag:"urgent"},
-      {t:"Reach out to every coffee chat contact you have",d:"Tell them you are looking for summer opportunities. Be specific about what you can do. People help people they have talked to.",tag:"career"},
-      {t:"Ask your professors about research assistantships",d:"Summer RAs count as experience, build your resume, and can lead to references for full-time applications later.",tag:"career"},
-      {t:"Consider unpaid or part-time opportunities",d:"A project, a volunteer role, or a freelance engagement still gives you experience to talk about in interviews. Something is better than nothing.",tag:""},
-      {t:"Use this time to skill up and build projects",d:"Take an online course, build a portfolio project, or write about your field on LinkedIn. Show employers you did not sit idle.",tag:"career"},
-      {t:"Keep applying for fall internships",d:"Fall recruiting starts in summer. You can still land a fall semester internship while using summer to prepare.",tag:"urgent"},
-    ]
-  },
-};
+function renderGuideStep(){
+  const steps = guideData[currentPath];
+  const step = steps[currentStep];
+  const total = steps.length;
+  const prog = document.getElementById('stepProgress');
+  prog.innerHTML = '';
+  for(let i=0;i<total;i++){
+    const d = document.createElement('div');
+    d.className = 'step-dot' + (i<currentStep?' done':'') + (i===currentStep?' current':'');
+    prog.appendChild(d);
+  }
 
-function renderRoadmap(path){
-  const p = paths[path];
+  const container = document.getElementById('guideContent');
+  container.innerHTML = `
+    <div class="guide-card">
+      <div class="guide-label">${step.label}</div>
+      <div class="guide-title">${step.title}</div>
+      <div class="guide-desc">${step.desc}</div>
+      <div class="guide-action">${step.content}</div>
+      <div class="btn-row">
+        ${currentStep > 0 ? '<button class="btn btn-secondary" onclick="prevStep()">Back</button>' : ''}
+        <button class="btn btn-primary" style="flex:1" onclick="nextStep()">${currentStep < total-1 ? 'I have done this, show me the next step' : 'I have done this, finish'}</button>
+      </div>
+    </div>`;
+
+  document.getElementById('emailSection').style.display = 'none';
+  document.getElementById('shareSection').style.display = 'none';
+}
+
+function nextStep(){
+  const steps = guideData[currentPath];
+  if(currentStep < steps.length - 1){
+    currentStep++;
+    renderGuideStep();
+    window.scrollTo(0,0);
+    saveState();
+  } else {
+    // Show completion
+    const container = document.getElementById('guideContent');
+    document.getElementById('stepProgress').innerHTML = guideData[currentPath].map(()=>'<div class="step-dot done"></div>').join('');
+    container.innerHTML = `
+      <div class="guide-card" style="text-align:center">
+        <div class="guide-title">You have completed all the steps for this stage.</div>
+        <div class="guide-desc">Come back when you move to the next stage of your journey. Reroot will be here.</div>
+        <button class="btn btn-primary" onclick="goTo('page-where')">Go back and choose a different stage</button>
+      </div>`;
+    document.getElementById('emailSection').style.display = 'block';
+    document.getElementById('shareSection').style.display = 'block';
+  }
+}
+
+function prevStep(){
+  if(currentStep > 0){
+    currentStep--;
+    renderGuideStep();
+    window.scrollTo(0,0);
+  }
+}
+
+function renderChecklist(path){
+  const p = checklistPaths[path];
   if(!p) return;
-  const container = document.getElementById('roadmapContent');
-  const doneCount = p.steps.filter((_,i) => completedSteps.has(path+'-'+i)).length;
+  const container = document.getElementById('guideContent');
+  document.getElementById('stepProgress').innerHTML = '';
+  const doneCount = p.steps.filter((_,i)=>completedSteps.has(path+'-'+i)).length;
   const pct = Math.round((doneCount/p.steps.length)*100);
 
   let extra = '';
-  if(path === 'offers'){
+  if(p.extra === 'coffeechat'){
     extra = `<div class="coffeechat-box">
       <div class="coffeechat-title">Want to talk to someone who has been through this?</div>
-      <div class="coffeechat-desc">I offer free 15-minute coffee chats for international students deciding between programs. Fill this out so I can prepare for our conversation.</div>
+      <div class="coffeechat-desc">I offer free 15-minute coffee chats for international students deciding between programs. Fill this out so I can prepare.</div>
       <div class="coffeechat-form">
-        <input type="text" id="ccName" placeholder="Your name" style="font-size:12px;padding:8px 12px">
-        <input type="text" id="ccPrograms" placeholder="Which programs are you deciding between?" style="font-size:12px;padding:8px 12px">
-        <input type="text" id="ccBiggest" placeholder="What is your biggest concern right now?" style="font-size:12px;padding:8px 12px">
-        <input type="email" id="ccEmail" placeholder="Your email" style="font-size:12px;padding:8px 12px">
+        <input type="text" placeholder="Your name" style="font-size:12px;padding:8px 12px">
+        <input type="text" placeholder="Which programs are you deciding between?" style="font-size:12px;padding:8px 12px">
+        <input type="text" placeholder="What is your biggest concern right now?" style="font-size:12px;padding:8px 12px">
+        <input type="email" placeholder="Your email" style="font-size:12px;padding:8px 12px">
         <button class="btn btn-primary" style="padding:10px;font-size:12px" onclick="this.textContent='Submitted! I will reach out soon.';this.disabled=true">Request a coffee chat</button>
       </div>
     </div>`;
@@ -369,7 +605,7 @@ function renderRoadmap(path){
 
   container.innerHTML = `
     <div class="card">
-      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--blue);margin-bottom:6px">${p.label}</div>
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--blue);margin-bottom:6px">You are here: ${p.label}</div>
       <div class="card-title">${p.title}</div>
       <div style="font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:16px">${p.intro}</div>
       <div class="progress-mini">
@@ -379,7 +615,7 @@ function renderRoadmap(path){
       ${p.steps.map((s,i) => {
         const id = path+'-'+i;
         const done = completedSteps.has(id);
-        return `<div class="step-item ${done?'done':''}" id="step-${id}" onclick="toggleStep('${id}','${path}')">
+        return `<div class="step-item ${done?'done':''}" id="step-${id}" onclick="toggleCheckStep('${id}','${path}')">
           <div class="step-check">&#10003;</div>
           <div class="step-content">
             <div class="step-name">${s.t}</div>
@@ -390,40 +626,37 @@ function renderRoadmap(path){
       }).join('')}
     </div>
     ${extra}`;
+  document.getElementById('emailSection').style.display = 'block';
+  document.getElementById('shareSection').style.display = 'block';
 }
 
-function toggleStep(id, path){
+function toggleCheckStep(id, path){
   if(completedSteps.has(id)) completedSteps.delete(id);
   else completedSteps.add(id);
-  const el = document.getElementById('step-'+id);
-  if(el) el.classList.toggle('done');
-  const p = paths[path];
-  const doneCount = p.steps.filter((_,i) => completedSteps.has(path+'-'+i)).length;
+  document.getElementById('step-'+id).classList.toggle('done');
+  const p = checklistPaths[path];
+  const doneCount = p.steps.filter((_,i)=>completedSteps.has(path+'-'+i)).length;
   const pct = Math.round((doneCount/p.steps.length)*100);
-  const fill = document.getElementById('pFill');
-  const text = document.getElementById('pText');
-  if(fill) fill.style.width = pct+'%';
-  if(text) text.textContent = doneCount+'/'+p.steps.length;
+  document.getElementById('pFill').style.width = pct+'%';
+  document.getElementById('pText').textContent = doneCount+'/'+p.steps.length;
   saveState();
 }
 
 function saveState(){
-  try{localStorage.setItem('reroot_v3',JSON.stringify({user,path:currentPath,completed:Array.from(completedSteps)}));}catch(e){}
+  try{localStorage.setItem('reroot_v4',JSON.stringify({user,path:currentPath,step:currentStep,completed:Array.from(completedSteps)}));}catch(e){}
 }
 function loadState(){
   try{
-    const s=JSON.parse(localStorage.getItem('reroot_v3'));
+    const s=JSON.parse(localStorage.getItem('reroot_v4'));
     if(!s||!s.path)return false;
-    user=s.user||{};completedSteps=new Set(s.completed||[]);currentPath=s.path;
-    renderRoadmap(s.path);goTo('page-roadmap');return true;
+    user=s.user||{};currentPath=s.path;currentStep=s.step||0;completedSteps=new Set(s.completed||[]);
+    if(guideData[currentPath]){renderGuideStep();}else{renderChecklist(currentPath);}
+    goTo('page-guide');return true;
   }catch(e){return false;}
 }
 if(!loadState()){}
 
-function toggleChat(){
-  const w=document.getElementById('chatWindow');w.classList.toggle('open');
-  document.getElementById('chatToggle').textContent=w.classList.contains('open')?'Close':'Ask AI';
-}
+function toggleChat(){const w=document.getElementById('chatWindow');w.classList.toggle('open');document.getElementById('chatToggle').textContent=w.classList.contains('open')?'Close':'Ask AI';}
 function sendQuick(t){document.getElementById('chatInput').value=t;sendMessage();}
 async function sendMessage(){
   const input=document.getElementById('chatInput');const text=input.value.trim();if(!text)return;input.value='';
@@ -432,8 +665,7 @@ async function sendMessage(){
   const tid='ty'+Date.now();
   msgs.innerHTML+=`<div class="msg bot" id="${tid}"><div class="msg-name">Reroot AI</div><div class="msg-bubble"><div class="typing-indicator"><span></span><span></span><span></span></div></div></div>`;
   msgs.scrollTop=msgs.scrollHeight;btn.disabled=true;
-  const phase=paths[currentPath]?paths[currentPath].title:'getting started';
-  const sys='You are the Reroot AI, a practical advisor for international graduate students navigating the US. Built by an international student from India (University of New Haven, MS in I/O Psychology, GPA 3.96, commencement speaker, now in HR tech navigating H-1B). Give specific, actionable advice. Under 120 words. For immigration, note they should confirm with their DSO. Student: '+(user.name||'a student')+' from '+(user.country||'abroad')+', studying '+(user.program||'a graduate program')+'. Current phase: '+phase+'.';
+  const sys='You are the Reroot AI, a practical advisor for international graduate students navigating the US. Built by an international student from India (University of New Haven, MS in I/O Psychology, GPA 3.96, commencement speaker, now in HR tech navigating H-1B). Give specific, actionable advice. Under 120 words. For immigration, note they should confirm with their DSO. Student: '+(user.name||'a student')+' from '+(user.country||'abroad')+', studying '+(user.program||'a graduate program')+'.';
   try{
     const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:250,system:sys,messages:[{role:'user',content:text}]})});
     const data=await res.json();const reply=data.content?.[0]?.text||'Could not get a response.';
