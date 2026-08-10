@@ -7,7 +7,7 @@
 <style>
 :root{--bg:#f4f8fc;--bg-mid:#e8f2fb;--blue:#2a7abf;--blue-dark:#1a5a9a;--blue-light:#5ba3d9;--blue-pale:#daeeff;--text:#1a2e42;--text-muted:#5a7a9a;--border:#c5dff0;--white:#fff;--red:#c0392b;--green:#27ae60;--orange:#e67e22}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);font-size:14px;min-height:100vh}
+body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);font-size:14px;min-height:100vh;padding-bottom:60px}
 .page{display:none;min-height:100vh}.page.active{display:block}
 .nav{background:var(--white);border-bottom:1.5px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
 .nav-logo{font-size:20px;font-weight:700;color:var(--blue)}.nav-logo span{color:var(--text)}
@@ -35,6 +35,8 @@ textarea{resize:none;height:120px;line-height:1.5}
 .btn-full{width:100%;padding:13px;font-size:14px}
 .opt-btn{padding:13px 18px;background:var(--white);border:1.5px solid var(--border);border-radius:6px;cursor:pointer;font-size:13px;color:var(--text);font-family:Arial;text-align:left;transition:all 0.15s;display:block;width:100%;margin-bottom:8px}
 .opt-btn:hover{border-color:var(--blue-light);background:var(--blue-pale)}
+.opt-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
+.opt-tip{font-size:11px;color:var(--text-muted);line-height:1.45}
 
 /* STEP BY STEP */
 .step-progress{display:flex;gap:4px;margin-bottom:24px}
@@ -110,6 +112,19 @@ textarea{resize:none;height:120px;line-height:1.5}
 .typing-indicator{display:flex;gap:4px;align-items:center}.typing-indicator span{width:5px;height:5px;background:var(--text-muted);border-radius:50%;animation:bounce 1.2s infinite}.typing-indicator span:nth-child(2){animation-delay:0.2s}.typing-indicator span:nth-child(3){animation-delay:0.4s}
 @keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
 @media(max-width:500px){.email-row{flex-direction:column}.setup-grid{grid-template-columns:1fr}.btn-row{flex-direction:column}}
+/* BOTTOM BUTTONS */
+.bottom-bar{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1.5px solid var(--border);padding:10px 24px;display:flex;justify-content:center;gap:10px;z-index:100}
+.bottom-btn{padding:9px 18px;border-radius:4px;border:1.5px solid var(--border);background:var(--white);font-size:12px;font-weight:700;color:var(--text);cursor:pointer;font-family:Arial;transition:all 0.15s}
+.bottom-btn:hover{border-color:var(--blue);color:var(--blue)}
+.bottom-btn.primary{background:var(--blue);color:var(--white);border-color:var(--blue)}
+.bottom-btn.primary:hover{background:var(--blue-dark)}
+/* ABOUT MODAL */
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--white);border-radius:8px;padding:28px 32px;max-width:500px;width:90%;max-height:80vh;overflow-y:auto;position:relative}
+.modal-close{position:absolute;top:12px;right:16px;background:none;border:none;font-size:18px;cursor:pointer;color:var(--text-muted);font-family:Arial}
+/* COFFEE CHAT MODAL */
+.coffee-modal{max-width:480px}
 </style>
 </head>
 <body>
@@ -150,11 +165,10 @@ textarea{resize:none;height:120px;line-height:1.5}
   <div class="card">
     <div class="card-title">Where are you in the process?</div>
     <div class="card-sub" id="whereGreeting"></div>
-    <button class="opt-btn" onclick="startGuide('exploring')">Still exploring graduate programs</button>
-    <button class="opt-btn" onclick="startGuide('applied')">Applied, waiting for decisions</button>
-    <button class="opt-btn" onclick="startGuide('offers')">Have offers, deciding which to accept</button>
-    <button class="opt-btn" onclick="startGuide('accepted')">Accepted an offer, preparing to arrive</button>
-    <button class="opt-btn" onclick="goTo('page-semester')">Already on campus</button>
+    <button class="opt-btn" onclick="startGuide('exploring')"><div class="opt-title">Where should I apply?</div><div class="opt-tip">Helps you shortlist universities based on your priorities, find scholarships, and gives you email templates and resources for every step of the application.</div></button>
+    <button class="opt-btn" onclick="startGuide('offers')"><div class="opt-title">I got in. Which one do I pick?</div><div class="opt-tip">Helps you compare offers side by side on what actually matters: cost, career services, CPT timeline, and location. Includes a free coffee chat with someone who has been through it.</div></button>
+    <button class="opt-btn" onclick="startGuide('accepted')"><div class="opt-title">I said yes. Now what?</div><div class="opt-tip">Walks you through everything between accepting your offer and landing in the US: visa, housing, banking, and connecting with students already there.</div></button>
+    <button class="opt-btn" onclick="goTo('page-semester')"><div class="opt-title">I am already here. What is next?</div><div class="opt-tip">Shows you exactly what to focus on this semester: on-campus jobs, internship search, networking, and full-time applications based on where you are in your program.</div></button>
   </div>
 </div>
 </div>
@@ -229,7 +243,44 @@ textarea{resize:none;height:120px;line-height:1.5}
     <button class="chat-send" id="sendBtn" onclick="sendMessage()">&#10148;</button>
   </div>
 </div>
-<button class="chat-toggle" onclick="toggleChat()" id="chatToggle">Ask AI</button>
+<button class="chat-toggle" onclick="toggleChat()" id="chatToggle" style="display:none">Ask Reroot AI</button>
+</div>
+
+<!-- BOTTOM BAR -->
+<div class="bottom-bar">
+  <button class="bottom-btn primary" onclick="toggleChat()">Ask Reroot AI</button>
+  <button class="bottom-btn" onclick="openCoffeeChat()">Virtual Coffee Chat</button>
+  <button class="bottom-btn" onclick="openAbout()">About</button>
+</div>
+
+<!-- ABOUT MODAL -->
+<div class="modal-overlay" id="aboutModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('aboutModal')">&times;</button>
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--blue);margin-bottom:8px">My Story</div>
+    <div style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:12px">Hi, I am Ekta.</div>
+    <div style="font-size:13px;color:var(--text-muted);line-height:1.7;margin-bottom:16px">I moved from India to the US for my master's in I/O Psychology at the University of New Haven. I landed with no network, no roadmap, and no one who had done exactly what I was trying to do. I had to figure out everything from scratch: how to shortlist programs, how to fund my degree, how to get an internship on CPT, how to convert to full-time on OPT, and how to navigate the H-1B process.</div>
+    <div style="font-size:13px;color:var(--text-muted);line-height:1.7;margin-bottom:16px">I graduated with a 3.96 GPA and was selected as commencement speaker. I converted my internship into a full-time role at Retensa, an HR technology company, where I now manage 38+ enterprise accounts. I am currently going through the H-1B sponsorship process myself.</div>
+    <div style="font-size:13px;color:var(--text-muted);line-height:1.7;margin-bottom:16px">I built Reroot because the resource I needed did not exist when I needed it. No institution funded this. I researched everything from scratch, made every mistake, and learned what actually works. This is everything I wish someone had given me on day one, and I am giving it to you for free.</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <a href="https://www.linkedin.com/in/ektamulchandani/" target="_blank" style="padding:8px 16px;background:var(--blue);color:var(--white);border-radius:4px;font-size:12px;font-weight:700;text-decoration:none;font-family:Arial">Connect on LinkedIn</a>
+      <a href="https://www.instagram.com/ektaaaa.a/" target="_blank" style="padding:8px 16px;background:var(--bg-mid);color:var(--text);border:1px solid var(--border);border-radius:4px;font-size:12px;font-weight:700;text-decoration:none;font-family:Arial">Follow on Instagram</a>
+    </div>
+  </div>
+</div>
+
+<!-- COFFEE CHAT MODAL -->
+<div class="modal-overlay" id="coffeeModal">
+  <div class="modal coffee-modal">
+    <button class="modal-close" onclick="closeModal('coffeeModal')">&times;</button>
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--green);margin-bottom:8px">Free for all Rerooters</div>
+    <div style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px">Virtual Coffee Chat</div>
+    <div style="font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:16px">30 minutes with me. I have been through the entire international student journey, from applying from India to navigating H-1B right now. Just honest advice from someone who gets it.</div>
+    <div style="text-align:center">
+      <a href="https://calendly.com/ektamulchandani/30min" target="_blank" style="display:inline-block;padding:14px 32px;background:var(--green);color:var(--white);border-radius:5px;font-size:14px;font-weight:700;text-decoration:none;font-family:Arial">Book a time on my calendar</a>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:10px">Opens Calendly. Pick any time that works for you.</div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -444,65 +495,60 @@ ${user.name || '[Your Name]'}</div>
         <div class="prompt-item">If you could change one thing about the program, what would it be?</div>
         <div class="prompt-item">What surprised you the most about studying here?</div>
       </div>
-      <div style="font-size:12px;color:var(--text-muted);line-height:1.5">Aim to talk to at least 2 people per program on your shortlist. Their answers will change your ranking.</div>`
+      <div style="font-size:12px;color:var(--text-muted);line-height:1.5;margin-bottom:12px">Aim to talk to at least 2 people per program on your shortlist. Their answers will change your ranking.</div><div style="font-size:13px;font-weight:700;margin-bottom:8px">Build your LinkedIn profile first</div><a class="resource-link" href="https://www.linkedin.com/business/talent/blog/product-tips/linkedin-profile-summaries-that-we-love-and-how-to-boost-your-own" target="_blank"><div class="resource-link-title">LinkedIn: Profile Tips That Work</div><div class="resource-link-desc">How to write a profile that gets noticed by recruiters and alumni</div></a><a class="resource-link" href="https://university.linkedin.com/content/university/en-us/linkedin-for-students" target="_blank"><div class="resource-link-title">LinkedIn for Students</div><div class="resource-link-desc">Official LinkedIn guide for students building their profile for the first time</div></a>`
     },
   ],
 };
 
 // OTHER PATHS (checklist style for now, will convert to guided later)
 const checklistPaths = {
-  applied: {title:"Applied, Waiting for Decisions",label:"Waiting on decisions",intro:"The waiting period is not dead time. Here is what to do right now.",steps:[
-    {t:"Talk to current students at your target schools",d:"Ask: how is Career Services for F-1 students? How easy is it to get an on-campus job?",tag:"career"},
-    {t:"Research on-campus job availability at each school",d:"Some schools have robust on-campus hiring. Others barely have options.",tag:""},
-    {t:"Apply to external scholarships now",d:"Many scholarships have separate deadlines from admissions. Do not wait for an acceptance to start.",tag:"urgent"},
-    {t:"Build your LinkedIn profile",d:"Add your target program, expected start date, and connect with alumni.",tag:"career"},
-    {t:"Research housing options at each school",d:"On-campus housing fills fast. Get on waitlists now.",tag:""},
-  ]},
   offers: {title:"Deciding Between Offers",label:"Choosing a program",intro:"Do not choose by gut feeling. Here is what to actually compare.",steps:[
-    {t:"Compare total cost of attendance, not just tuition",d:"Add housing, food, insurance, transportation. A cheaper city can save you tens of thousands.",tag:"urgent"},
+    {t:"Compare total cost of attendance, not just tuition",d:"Add housing, food, insurance, transportation. Use the Cost of Living Calculator at numbeo.com to compare cities.",tag:"urgent"},
     {t:"Compare Career Services quality for international students",d:"Ask alumni directly: did Career Services help you get an internship as an F-1 student?",tag:"career"},
     {t:"Check CPT eligibility timelines",d:"If one program lets you intern after one semester and another requires a year, that changes everything.",tag:"visa"},
-    {t:"Look at internship and job placement rates",d:"Ask: what percentage of international students get internships? Where do they work after?",tag:"career"},
+    {t:"Look at internship and job placement rates",d:"Ask each program or check LinkedIn alumni outcomes. Also check myvisajobs.com for H-1B sponsorship rates by employer near each school.",tag:"career"},
     {t:"Negotiate before you commit",d:"If one school offered more money, tell the other. Be polite, direct, and show the competing offer.",tag:"urgent"},
   ],extra:"coffeechat"},
   accepted: {title:"Accepted, Preparing to Arrive",label:"Preparing to arrive",intro:"You said yes. Here is everything to do before you land.",steps:[
-    {t:"Receive and review your I-20",d:"Your most important document. Verify program end date and enrollment level.",tag:"visa"},
-    {t:"Pay SEVIS fee ($350) and book visa interview",d:"Pay before your interview. Embassy wait times can be months.",tag:"visa"},
+    {t:"Receive and review your I-20",d:"Your most important document. Verify program end date and enrollment level. Learn more at uscis.gov/students.",tag:"visa"},
+    {t:"Pay SEVIS fee ($350) and book visa interview",d:"Pay at fmjfee.com before your interview. Embassy wait times can be months.",tag:"visa"},
     {t:"Secure housing before arrival",d:"On-campus housing fills fast. Contact the international student office immediately.",tag:"urgent"},
-    {t:"Plan your US bank account",d:"Chase and Bank of America let you start before arrival.",tag:""},
-    {t:"Connect with alumni and current students on LinkedIn",d:"Ask what they wish they knew before arriving.",tag:"career"},
-    {t:"Research on-campus job opportunities",d:"Library, dining, student offices. Apply early.",tag:"career"},
+    {t:"Plan your US bank account",d:"Chase and Bank of America let you start before arrival. Compare options at nerdwallet.com/best-student-bank-accounts.",tag:""},
+    {t:"Build your LinkedIn profile before you arrive",d:"Follow the LinkedIn guide at linkedin.com/learning for international students. Add your university, program, and expected start date.",tag:"career"},
+    {t:"Connect with alumni and current students on LinkedIn",d:"Ask what they wish they knew before arriving. Use the connection message template from the Exploring section.",tag:"career"},
+    {t:"Research on-campus job opportunities",d:"Library, dining, student offices. Apply early. Check your university's student employment page.",tag:"career"},
   ]},
   sem12: {title:"1st or 2nd Semester",label:"Building your foundation",intro:"Everything you do now sets up your internship search.",steps:[
-    {t:"Attend every International Student Orientation session",d:"Learn CPT/OPT rules and meet your DSO.",tag:"urgent"},
-    {t:"Visit Career Services in your first week",d:"Get your resume reviewed. Get on the mailing list.",tag:"career"},
-    {t:"Update your resume to US standards",d:"No photo. No DOB. Action verbs. Quantified results.",tag:"career"},
-    {t:"Join 2 to 3 clubs with intention",d:"One professional, one cultural, one leadership.",tag:"career"},
-    {t:"Start coffee chats now",d:"2 to 3 per week on LinkedIn. Alumni first.",tag:"career"},
-    {t:"Look for on-campus jobs",d:"Apply early. These help with cash flow and SSN.",tag:"urgent"},
-    {t:"Apply to summer internships starting in January",d:"Handshake, LinkedIn, direct career pages. Filter for CPT.",tag:"urgent"},
+    {t:"Attend every International Student Orientation session",d:"Learn CPT/OPT rules and meet your DSO. Understand your work authorization at uscis.gov/working-in-the-united-states/students-and-exchange-visitors.",tag:"urgent"},
+    {t:"Visit Career Services in your first week",d:"Get your resume reviewed. Get on the mailing list. Ask about VMock (vmock.com) if your school offers free AI resume reviews.",tag:"career"},
+    {t:"Update your resume to US standards",d:"No photo. No DOB. Action verbs. Quantified results. Use jobscan.co to check your resume against job descriptions.",tag:"career"},
+    {t:"Build your LinkedIn profile properly",d:"Follow linkedin.com/learning courses on profile optimization. Add a professional photo, headline with your target role, and connect with 50+ alumni in your first month.",tag:"career"},
+    {t:"Join 2 to 3 clubs with intention",d:"One professional, one cultural, one leadership. Find clubs at your school's student life page or on Handshake.",tag:"career"},
+    {t:"Start coffee chats now",d:"2 to 3 per week on LinkedIn. Alumni first. Use the coffee chat template from lunchclub.com or the one in Reroot's Exploring section.",tag:"career"},
+    {t:"Look for on-campus jobs",d:"Apply early. These help with cash flow and SSN. Check your school's student employment portal and Handshake (joinhandshake.com).",tag:"urgent"},
+    {t:"Apply to summer internships starting in January",d:"Use Handshake (joinhandshake.com), LinkedIn Jobs, and direct career pages. Filter for CPT. Track applications with huntr.co or a simple spreadsheet.",tag:"urgent"},
   ]},
   sem34: {title:"3rd or 4th Semester",label:"Applying for full-time",intro:"Your goal is to secure a full-time offer before you graduate.",steps:[
-    {t:"Filter every application by H-1B sponsorship history",d:"Use MyVisaJobs.com or H1BGrader.com.",tag:"visa"},
-    {t:"Apply to full-time roles now",d:"Full-time offers come out months before graduation.",tag:"urgent"},
-    {t:"Take on a leadership role in a club",d:"Employers want to see you initiated something.",tag:"career"},
-    {t:"Apply for OPT 90 days before graduation",d:"Processing takes 3 to 5 months.",tag:"urgent"},
-    {t:"Start the H-1B conversation in January",d:"Your employer needs months to prepare the petition.",tag:"visa"},
-    {t:"Negotiate your offer, even on OPT",d:"Use Levels.fyi and Glassdoor for market rates.",tag:"career"},
+    {t:"Filter every application by H-1B sponsorship history",d:"Use myvisajobs.com or h1bgrader.com before applying anywhere.",tag:"visa"},
+    {t:"Apply to full-time roles now",d:"Full-time offers come out months before graduation. Use LinkedIn, Handshake, and Indeed. Track with huntr.co.",tag:"urgent"},
+    {t:"Take on a leadership role in a club",d:"Employers want to see you initiated something. Document outcomes for your resume and LinkedIn.",tag:"career"},
+    {t:"Apply for OPT 90 days before graduation",d:"Processing takes 3 to 5 months. Instructions at uscis.gov/opt. Work with your DSO.",tag:"urgent"},
+    {t:"Start the H-1B conversation in January",d:"Your employer needs months to prepare the petition. Learn how H-1B works at uscis.gov/working-in-the-united-states/temporary-workers/h-1b-specialty-occupations.",tag:"visa"},
+    {t:"Negotiate your offer, even on OPT",d:"Use levels.fyi, glassdoor.com, and LinkedIn Salary for market rates. Total compensation includes base, bonus, equity, and benefits.",tag:"career"},
   ]},
   summer_yes: {title:"Summer: On Internship",label:"Proving yourself",intro:"Turn this into a return offer or a strong reference.",steps:[
-    {t:"Go above and beyond from week one",d:"Volunteer for stretch projects.",tag:"career"},
-    {t:"Document every deliverable as you go",d:"Save outputs, screenshots, feedback.",tag:"urgent"},
-    {t:"Ask for feedback at the midpoint",d:"At week 5, ask what to improve.",tag:"career"},
-    {t:"Apply to fall opportunities in parallel",d:"Not every internship converts.",tag:"urgent"},
-    {t:"Update LinkedIn with your internship",d:"Recruiters notice active profiles.",tag:"career"},
+    {t:"Go above and beyond from week one",d:"Volunteer for stretch projects. Read 'The First 90 Days' framework at hbr.org for onboarding strategy.",tag:"career"},
+    {t:"Document every deliverable as you go",d:"Save outputs, screenshots, feedback. Use a running Google Doc or Notion page to track weekly wins.",tag:"urgent"},
+    {t:"Ask for feedback at the midpoint",d:"At week 5, ask what to improve. Use the SBI feedback model (Situation, Behavior, Impact).",tag:"career"},
+    {t:"Apply to fall opportunities in parallel",d:"Not every internship converts. Use Handshake and LinkedIn. Track at huntr.co.",tag:"urgent"},
+    {t:"Update LinkedIn with your internship",d:"Add company, role, and 2 to 3 bullet points. Recruiters notice active profiles. Post about what you are learning.",tag:"career"},
   ]},
   summer_no: {title:"Summer: Still Looking",label:"Finding an opportunity",intro:"It is not too late. Here is what to do right now.",steps:[
-    {t:"Apply to smaller companies and startups",d:"They hire on rolling timelines.",tag:"urgent"},
-    {t:"Reach out to every coffee chat contact",d:"Be specific about what you can do.",tag:"career"},
-    {t:"Ask professors about research assistantships",d:"Summer RAs count as experience.",tag:"career"},
-    {t:"Use this time to build projects",d:"Take a course, write on LinkedIn. Show you did not sit idle.",tag:"career"},
-    {t:"Keep applying for fall internships",d:"Fall recruiting starts in summer.",tag:"urgent"},
+    {t:"Apply to smaller companies and startups",d:"They hire on rolling timelines. Search on angellist.com, wellfound.com, and LinkedIn with 'startup' filter.",tag:"urgent"},
+    {t:"Reach out to every coffee chat contact",d:"Be specific about what you can do. Use the template from Reroot's Exploring section.",tag:"career"},
+    {t:"Ask professors about research assistantships",d:"Summer RAs count as experience and can lead to references. Check your department's research page.",tag:"career"},
+    {t:"Use this time to build projects and skills",d:"Take courses on coursera.org, edx.org, or LinkedIn Learning. Build a portfolio project on GitHub. Write about your field on LinkedIn.",tag:"career"},
+    {t:"Keep applying for fall internships",d:"Fall recruiting starts in summer. Use Handshake (joinhandshake.com), LinkedIn, and direct company career pages.",tag:"urgent"},
   ]},
 };
 
@@ -592,13 +638,9 @@ function renderChecklist(path){
   if(p.extra === 'coffeechat'){
     extra = `<div class="coffeechat-box">
       <div class="coffeechat-title">Want to talk to someone who has been through this?</div>
-      <div class="coffeechat-desc">I offer free 15-minute coffee chats for international students deciding between programs. Fill this out so I can prepare.</div>
-      <div class="coffeechat-form">
-        <input type="text" placeholder="Your name" style="font-size:12px;padding:8px 12px">
-        <input type="text" placeholder="Which programs are you deciding between?" style="font-size:12px;padding:8px 12px">
-        <input type="text" placeholder="What is your biggest concern right now?" style="font-size:12px;padding:8px 12px">
-        <input type="email" placeholder="Your email" style="font-size:12px;padding:8px 12px">
-        <button class="btn btn-primary" style="padding:10px;font-size:12px" onclick="this.textContent='Submitted! I will reach out soon.';this.disabled=true">Request a coffee chat</button>
+      <div class="coffeechat-desc">I offer free 30-minute coffee chats for international students deciding between programs. Just honest advice from someone who has been through it.</div>
+      <div style="text-align:center;margin-top:12px">
+        <a href="https://calendly.com/ektamulchandani/30min" target="_blank" style="display:inline-block;padding:10px 24px;background:var(--green);color:var(--white);border-radius:5px;font-size:13px;font-weight:700;text-decoration:none;font-family:Arial">Book a time on my calendar</a>
       </div>
     </div>`;
   }
@@ -655,6 +697,11 @@ function loadState(){
   }catch(e){return false;}
 }
 if(!loadState()){}
+
+function openAbout(){document.getElementById('aboutModal').classList.add('open');}
+function openCoffeeChat(){document.getElementById('coffeeModal').classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-overlay').forEach(m=>{m.addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});});
 
 function toggleChat(){const w=document.getElementById('chatWindow');w.classList.toggle('open');document.getElementById('chatToggle').textContent=w.classList.contains('open')?'Close':'Ask AI';}
 function sendQuick(t){document.getElementById('chatInput').value=t;sendMessage();}
