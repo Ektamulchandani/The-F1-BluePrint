@@ -714,7 +714,7 @@ async function sendMessage(){
   msgs.scrollTop=msgs.scrollHeight;btn.disabled=true;
   const sys='You are the Reroot AI, a practical advisor for international graduate students navigating the US. Built by an international student from India (University of New Haven, MS in I/O Psychology, GPA 3.96, commencement speaker, now in HR tech navigating H-1B). Give specific, actionable advice. Under 120 words. For immigration, note they should confirm with their DSO. Student: '+(user.name||'a student')+' from '+(user.country||'abroad')+', studying '+(user.program||'a graduate program')+'.';
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:250,system:sys,messages:[{role:'user',content:text}]})});
+    const res=await fetch('https://reroot-ai.ektamulchandanima.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:250,system:sys,messages:[{role:'user',content:text}]})});
     const data=await res.json();const reply=data.content?.[0]?.text||'Could not get a response.';
     document.getElementById(tid).remove();
     msgs.innerHTML+=`<div class="msg bot"><div class="msg-name">Reroot AI</div><div class="msg-bubble">${esc(reply)}</div></div>`;
